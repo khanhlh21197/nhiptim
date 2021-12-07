@@ -40,6 +40,10 @@ class MQTTClientWrapper {
     String userJson = jsonEncode(user);
     _publishMessage('registeruser', userJson);
   }
+  void patientRegister(User user) {
+    String userJson = jsonEncode(user);
+    _publishMessage('registerbenhnhan', userJson);
+  }
 
   void publishMessage(String topic, String message) {
     _publishMessage(topic, message);

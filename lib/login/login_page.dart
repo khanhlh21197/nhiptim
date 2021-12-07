@@ -8,6 +8,8 @@ import 'package:technonhiptim/helper/constants.dart';
 import 'package:technonhiptim/helper/loader.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
+import 'package:technonhiptim/main/benh_nhan.dart';
+import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/main/home_screen.dart';
 import 'package:technonhiptim/model/user.dart';
 import 'package:technonhiptim/navigator.dart';
@@ -43,24 +45,11 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Widget _circularProgress() {
-    return Dialog(
-      child: new Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          new CircularProgressIndicator(),
-          new Text("Loading"),
-        ],
-      ),
-    );
-  }
-
   @override
   void initState() {
     super.initState();
     initMqtt();
     initOneSignal(Constants.one_signal_app_id);
-
     sharedPrefsHelper = SharedPrefsHelper();
     getSharedPrefs();
   }
@@ -99,14 +88,18 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Future<void> getSharedPrefs() async {
+    // await sharedPrefsHelper.addBoolToSF('switchValue', true);
     _emailController.text = await sharedPrefsHelper.getStringValuesSF('email');
     _passwordController.text =
     await sharedPrefsHelper.getStringValuesSF('password');
     _switchValue = await sharedPrefsHelper.getBoolValuesSF('switchValue');
-    if (_emailController.text.isNotEmpty &&
-        _passwordController.text.isNotEmpty) {
-      await _tryLogin();
-    }
+    print('_LoginPageState.getSharedPrefs $_switchValue');
+    print('_LoginPageState.getSharedPrefs ${_emailController.text}');
+
+    // if (_emailController.text.isNotEmpty &&
+    //     _passwordController.text.isNotEmpty) {
+    //   await _tryLogin();
+    // }
   }
 
   @override
@@ -116,7 +109,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void> _tryLogin() async {
+  Future<void>  _tryLogin() async {
     setState(() {
       loading = true;
     });
@@ -136,6 +129,21 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text, '', '', '', '', '', playerid);
     await initMqtt();
     mqttClientWrapper.login(user);
+    // if (mqttClientWrapper.connectionState ==
+    //     MqttCurrentConnectionState.CONNECTED) {
+    //   if (switchValue) {
+    //     mqttClientWrapper.login(user);
+    //   } else {
+    //     mqttClientWrapper.login(user);
+    //   }
+    // } else {
+    //   await initMqtt();
+    //   if (switchValue) {
+    //     mqttClientWrapper.login(user);
+    //   } else {
+    //     mqttClientWrapper.login(user);
+    //   }
+    // }
   }
 
   Future<void> login(String message) async {
@@ -151,27 +159,42 @@ class _LoginPageState extends State<LoginPage> {
         loading = false;
       });
       print('Login success');
-      if (_switchValue != null) {
-        if (_switchValue) {
-          await sharedPrefsHelper.addStringToSF('email', _emailController.text);
-          await sharedPrefsHelper.addStringToSF(
-              'password', _passwordController.text);
-          await sharedPrefsHelper.addBoolToSF('switchValue', _switchValue);
-        } else {
-          await sharedPrefsHelper.removeValues();
-        }
-      }
+      // if (_switchValue != null) {
+      //   if (_switchValue) {
+      //     await sharedPrefsHelper.addStringToSF('email', _emailController.text);
+      //     await sharedPrefsHelper.addStringToSF(
+      //         'password', _passwordController.text);
+      //     await sharedPrefsHelper.addBoolToSF('switchValue', _switchValue);
+      //   } else {
+      //     await sharedPrefsHelper.removeValues();
+      //   }
+      // }
       await sharedPrefsHelper.addStringToSF('email', _emailController.text);
       await sharedPrefsHelper.addStringToSF(
           'password', _passwordController.text);
       await sharedPrefsHelper.addBoolToSF('switchValue', _switchValue);
       await sharedPrefsHelper.addBoolToSF('login', true);
-      navigatorPushAndRemoveUntil(
-        context,
-        HomeScreen(
+      // navigatorPushAndRemoveUntil(
+      //   context,
+      //   HomeScreen(
+      //     loginResponse: responseMap,
+      //   ),
+      // );
+      if (_emailController.text == 'admin' && switchValue == false) {
+        navigatorPushAndRemoveUntil(context,HomeScreen(
           loginResponse: responseMap,
-        ),
-      );
+        ) );
+      }
+      if (_emailController.text != 'admin' && switchValue == true){
+        navigatorPushAndRemoveUntil(context,BenhNhan());
+      }
+      // if (switchValue) {
+      //   navigatorPushAndRemoveUntil(context,BenhNhan());
+      // } else {
+      //   navigatorPushAndRemoveUntil(context,HomeScreen(
+      //     loginResponse: responseMap,
+      //   ) );
+      // }
     } else {
       this._showToast(context);
     }
@@ -446,9 +469,10 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 50),
                       _emailPasswordWidget(),
                       _submitButton(),
+                      switchContainer(),
                       _divider(),
                       // _facebookButton(),
-                      _createAccountLabel(),
+                      switchValue ? Container() : _createAccountLabel(),
                     ],
                   ),
                 ),
@@ -459,5 +483,32 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+  Widget switchContainer() {
+    return Container(
+      margin: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          Text(
+            'Y tá',
+          ),
+          CupertinoSwitch(
+            activeColor: Colors.blue,
+            value: switchValue ?? false,
+            onChanged: (value) {
+              setState(() {
+                switchValue = value;
+                print('_LoginPageState.switchContainer $switchValue');
+              });
+            },
+          ),
+          Text(
+            'Bệnh nhân',
+          ),
+        ],
+      ),
+    );
+  }
 
 }
+

@@ -105,7 +105,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildTextField(
-                  'Mã giám sát',
+                  'Mã bệnh nhân',
                   Icon(Icons.vpn_key),
                   TextInputType.visiblePassword,
                   idController,
@@ -191,7 +191,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
         children: [
           Expanded(
             child: Text(
-              'Mã địa điểm',
+              'Mã phòng',
             ),
           ),
           Expanded(
@@ -206,7 +206,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
     return Container(
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text("Chọn địa điểm"),
+          hint: Text("Chọn phòng"),
           value: currentSelectedValue,
           isDense: true,
           onChanged: (newValue) {

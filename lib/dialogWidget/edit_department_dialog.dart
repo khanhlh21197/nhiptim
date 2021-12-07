@@ -68,7 +68,7 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildTextField(
-                  'Địa chỉ',
+                  'Vị trí',
                   Icon(Icons.email),
                   TextInputType.text,
                   nameController,
@@ -152,7 +152,7 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
             context: context,
             builder: (context) => AlertDialog(
               title: new Text(
-                'Xóa địa điểm ?',
+                'Xóa phòng ?',
               ),
               actions: <Widget>[
                 new FlatButton(
@@ -184,7 +184,7 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
               color: Colors.red,
             ),
             Text(
-              'Xóa địa điểm',
+              'Xóa phòng',
               style: TextStyle(fontSize: 18, color: Colors.red),
             ),
           ],

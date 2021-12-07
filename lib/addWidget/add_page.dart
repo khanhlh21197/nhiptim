@@ -69,11 +69,11 @@ class _AddScreenState extends State<AddScreen> {
       width: double.infinity,
       child: Column(
         children: [
-          buildButton('Thêm người ', Icons.meeting_room_outlined, 1),
+          buildButton('Thêm bệnh nhân ', Icons.accessibility_new, 1),
           horizontalLine(),
-          buildButton('Thêm địa điểm', Icons.devices, 2),
+          buildButton('Thêm phòng', Icons.devices, 2),
           horizontalLine(),
-          buildButton('Thêm camera', Icons.camera_alt, 3),
+          buildButton('Thêm thiết bị', Icons.airline_seat_individual_suite_rounded, 3),
         ],
       ),
     );

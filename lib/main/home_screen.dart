@@ -1,14 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/helper/bottom_navigation_bar.dart';
-import 'package:technonhiptim/helper/constants.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
-import 'package:technonhiptim/main/detail_screen.dart';
 import 'package:technonhiptim/main/device_list_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
-import 'package:technonhiptim/main/user_profile_page.dart';
-
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
 
@@ -47,7 +43,6 @@ class _HomeScreenState extends State<HomeScreen> {
         '_HomeScreenState.getPermission ${quyen.runtimeType} - $_selectedIndex');
     initBottomBarItems(quyen);
     initWidgetOptions(quyen);
-    // sharedPrefsHelper.addStringToSF('khoa', loginResponse['khoa']);
   }
 
   void initBottomBarItems(int quyen) {
@@ -56,15 +51,15 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomBarItems = [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.menu,
+              Icons.meeting_room_outlined,
             ),
-            label: 'Người cách ly',
+            label: 'Phòng',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.meeting_room_outlined,
+              Icons.menu,
             ),
-            label: 'Địa điểm',
+            label: 'Bệnh nhân',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -74,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               Icons.account_box_outlined,
             ),
-            label: 'Tra Cứu',
+            label: 'Tìm kiếm',
           ),
         ];
         break;
@@ -86,8 +81,8 @@ class _HomeScreenState extends State<HomeScreen> {
     switch (quyen) {
       case 1:
         _widgetOptions = <Widget>[
-          DeviceListScreen(),
           DepartmentListScreen(),
+          DeviceListScreen(),
           AddScreen(),
           TraCuuScreen(),
         ];

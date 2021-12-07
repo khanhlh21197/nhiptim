@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
+import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/navigator.dart';
@@ -94,8 +95,15 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          title: Text('Danh sách địa điểm'),
+          title: Text('Danh sách phòng'),
           centerTitle: true,
+          actions: [
+            IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  navigatorPushAndRemoveUntil(context, LoginPage());
+                }),
+          ],
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
@@ -127,7 +135,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
           verticalLine(),
           buildTextLabel('Mã', 2),
           verticalLine(),
-          buildTextLabel('Địa chỉ', 3),
+          buildTextLabel('Ví trí', 3),
           verticalLine(),
           buildTextLabel('Sđt', 3),
           verticalLine(),

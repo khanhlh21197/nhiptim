@@ -1,20 +1,17 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:technonhiptim/helper/loader.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:technonhiptim/model/camera.dart';
-import 'package:technonhiptim/model/thietbi.dart';
 
 import '../helper/constants.dart' as Constants;
 
 class AddCameraScreen extends StatefulWidget {
   final List<String> dropDownItems;
-
-
 
   const AddCameraScreen({Key key, this.dropDownItems}) : super(key: key);
 
@@ -40,13 +37,12 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
     super.initState();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Thêm camera',
+          'Thêm thiết bị',
         ),
         centerTitle: true,
       ),
@@ -73,18 +69,18 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 idDeviceContainer(
-                  'Mã cam *',
+                  'Mã thiết bị *',
                   Icon(Icons.vpn_key),
                   TextInputType.visiblePassword,
                   idController,
                 ),
                 buildTextField(
-                  'Vị trí *',
+                  'Tên thiết bị *',
                   Icon(Icons.email),
                   TextInputType.text,
                   vitriController,
                 ),
-                buildDepartment('Mã địa điểm *'),
+                buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
             ),
@@ -230,9 +226,9 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
         children: [
           Expanded(
               child: Text(
-                label,
-                style: TextStyle(fontSize: 16),
-              )),
+            label,
+            style: TextStyle(fontSize: 16),
+          )),
           Expanded(
             child: dropdownDepartment(),
           ),
@@ -245,7 +241,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
     return Container(
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text("Chọn địa điểm"),
+          hint: Text("Chọn phòng"),
           value: currentSelectedValue,
           isDense: true,
           onChanged: (newValue) {

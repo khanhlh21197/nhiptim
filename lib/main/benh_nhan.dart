@@ -5,47 +5,38 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
-import 'package:technonhiptim/main/home_screen.dart';
-import 'package:technonhiptim/model/department.dart';
+import 'package:technonhiptim/helper/shared_prefs_helper.dart';
+import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/model/nguoidung.dart';
 import 'package:technonhiptim/model/thietbi.dart';
-import 'package:technonhiptim/response/device_response.dart';
 import 'package:technonhiptim/response/nguoi_dung_response.dart';
-
 import '../helper/constants.dart' as Constants;
+
 import '../navigator.dart';
 
-class GiamSat extends StatefulWidget {
-  final String madiadiem;
-
-  const GiamSat({Key key, this.madiadiem}) : super(key: key);
+class BenhNhan extends StatefulWidget {
+  const BenhNhan({
+    Key key,
+  }) : super(key: key);
 
   @override
-  _GiamSatState createState() => _GiamSatState();
+  _BenhNhanState createState() => _BenhNhanState();
 }
 
-class _GiamSatState extends State<GiamSat> {
-  static const LOGIN_DEVICE = 'getgs';
-
-  final GlobalKey<State> _keyLoader = new GlobalKey<State>();
-
-  // List<ThietBi> tbs = List();
+class _BenhNhanState extends State<BenhNhan> {
+  static const GET_TIMKIEM = 'getbenhnhantheoma';
   List<NguoiDung> peoples = List();
   MQTTClientWrapper mqttClientWrapper;
-
+  SharedPrefsHelper sharedPrefsHelper;
   String pubTopic;
+  var mabenhnhan;
   int selectedIndex;
-  List<Department> departments = List();
-  var dropDownItems = [''];
-
   bool isLoading = true;
 
-  @override
   void initState() {
+    sharedPrefsHelper = SharedPrefsHelper();
     initMqtt();
     isLoading = false;
-    getDevices();
-
     super.initState();
   }
 
@@ -53,24 +44,9 @@ class _GiamSatState extends State<GiamSat> {
     mqttClientWrapper = MQTTClientWrapper(
         () => print('Success'), (message) => handleDevice(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
-
-    Timer.periodic(
-      Duration(seconds: 30),
-      (Timer timer) {
-        getDevices();
-      },
-    );
-
-    // getDevices();
-
-
-  }
-
-  void getDevices() async {
-    NguoiDung peoples = NguoiDung(widget.madiadiem, '', '', '', '', '', '', '', Constants.mac);
-    pubTopic = LOGIN_DEVICE;
-    publishMessage(pubTopic, jsonEncode(peoples));
-    // showLoadingDialog();
+    mabenhnhan = await sharedPrefsHelper.getStringValuesSF('email');
+    print('_BenhNhanState.initMqtt $mabenhnhan');
+    getDevices();
   }
 
   Future<void> publishMessage(String topic, String message) async {
@@ -83,18 +59,11 @@ class _GiamSatState extends State<GiamSat> {
     }
   }
 
-  void showLoadingDialog() {
-    setState(() {
-      isLoading = true;
-    });
-    // Dialogs.showLoadingDialog(context, _keyLoader);
-  }
-
-  void hideLoadingDialog() {
-    setState(() {
-      isLoading = false;
-    });
-    // Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
+  void getDevices() async {
+    NguoiDung peoples =
+        NguoiDung('', mabenhnhan, '', '', '', '', '', '', Constants.mac);
+    pubTopic = GET_TIMKIEM;
+    publishMessage(pubTopic, jsonEncode(peoples));
   }
 
   Future<bool> _onWillPop() async {
@@ -126,11 +95,13 @@ class _GiamSatState extends State<GiamSat> {
       child: Scaffold(
         appBar: AppBar(
           automaticallyImplyLeading: false,
-          leading: IconButton(
-              icon: Icon(Icons.arrow_back),
-              onPressed: () {
-                navigatorPushAndRemoveUntil(context, HomeScreen());
-              }),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.logout),
+                onPressed: () {
+                  navigatorPushAndRemoveUntil(context, LoginPage());
+                }),
+          ],
           title: Text('Giám Sát'),
           centerTitle: true,
         ),
@@ -168,7 +139,7 @@ class _GiamSatState extends State<GiamSat> {
             width: 1,
           ),
           verticalLine(),
-          buildTextLabel('Họ và tên', 3),
+          buildTextLabel('Họ tên', 3),
           verticalLine(),
           buildTextLabel('Mã bn', 1),
           verticalLine(),
@@ -231,7 +202,7 @@ class _GiamSatState extends State<GiamSat> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].hoten,
+                      peoples[index].hoten ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -242,7 +213,7 @@ class _GiamSatState extends State<GiamSat> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].magiamsat,
+                      peoples[index].magiamsat ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -253,7 +224,7 @@ class _GiamSatState extends State<GiamSat> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      widget.madiadiem ?? '0',
+                      peoples[index].madiadiem ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -341,40 +312,41 @@ class _GiamSatState extends State<GiamSat> {
     var response = NguoiDungResponse.fromJson(responseMap);
 
     switch (pubTopic) {
-      case LOGIN_DEVICE:
+      case GET_TIMKIEM:
         peoples = response.id.map((e) => NguoiDung.fromJson(e)).toList();
         setState(() {});
-        //{"errorCode":"0","message":"","id":[{"madiadiem":"D001","magiamsat":"Gs001","hoten":"nguyen van a","gioitinh":"nam","ngaysinh":"010997","nhietdo":"37","nongdooxy":"90","mac":"28:16:7F:8D:75:30"}
-        // ],"result":"true"}c
         peoples.forEach((element) {
           if (double.tryParse(element.nhietdo) > 37.5) {
             element.color = Colors.red;
-            setState(() {
-
-            });
+            setState(() {});
           }
           if (double.tryParse(element.nhiptim) > 100) {
             element.color1 = Colors.red;
-            setState(() {
-
-            });
+            setState(() {});
           }
           if (double.tryParse(element.nongdooxy) < 95) {
             element.color2 = Colors.red;
-            setState(() {
-
-            });
+            setState(() {});
           }
         });
         hideLoadingDialog();
         break;
     }
     pubTopic = '';
-    
-    // mqttClientWrapper.subscribe('ketquags', (_message) {
-    //   print('_GiamSatState.handleDevice $_message');
-    // });
-    
+  }
+
+  void showLoadingDialog() {
+    setState(() {
+      isLoading = true;
+    });
+    // Dialogs.showLoadingDialog(context, _keyLoader);
+  }
+
+  void hideLoadingDialog() {
+    setState(() {
+      isLoading = false;
+    });
+    // Navigator.of(_keyLoader.currentContext, rootNavigator: true).pop();
   }
 
   @override

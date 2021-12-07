@@ -170,7 +170,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        title: Text('Tra Cứu'),
+        title: Text('Tìm kiếm'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -179,9 +179,9 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
           Container(
             child: Column(
               children: [
-                buildDepartment('Mã địa điểm *'),
+                buildDepartment('Mã phòng *'),
                 SizedBox(height: 5,),
-                buildBenhNhan('Mã giám sát *'),
+                buildBenhNhan('Mã bệnh nhân *'),
                 SizedBox(height: 5,),
                 buildTextDateTu('Từ ngày'),
                 SizedBox(height: 5,),
@@ -227,11 +227,11 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
               width: 1,
             ),
             verticalLine(),
-            buildTextLabel('Họ tên', 3),
+            buildTextLabel('Họ và tên', 3),
             verticalLine(),
-            buildTextLabel('Mã gs', 1),
+            buildTextLabel('Mã bn', 1),
             verticalLine(),
-            buildTextLabel('Mã đđ', 1),
+            buildTextLabel('Mã ph', 1),
             verticalLine(),
             buildTextLabel('Nđộ', 1),
             verticalLine(),
@@ -589,7 +589,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
             style: TextStyle(fontSize: 16),
           ),
           SizedBox(
-            width: 40,
+            width: 70,
           ),
           dropdownDepartment(),
         ],
@@ -601,7 +601,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     return Container(
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text("Chọn địa điểm"),
+          hint: Text("Chọn phòng"),
           value: currentSelectedMaDiaDiem,
           isDense: true,
           onChanged: (newValue) {
@@ -653,7 +653,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     return Container(
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text("Chọn người "),
+          hint: Text("Chọn bệnh nhân "),
           value: currentSelectedMaBenhNhan,
           isDense: true,
           onChanged: (newValue) {

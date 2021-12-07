@@ -109,13 +109,13 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           actions: [
-            IconButton(
-                icon: Icon(Icons.logout),
-                onPressed: () {
-                  navigatorPushAndRemoveUntil(context, LoginPage());
-                }),
+            // IconButton(
+            //     icon: Icon(Icons.logout),
+            //     onPressed: () {
+            //       navigatorPushAndRemoveUntil(context, LoginPage());
+            //     }),
           ],
-          title: Text('Danh sách người cách ly'),
+          title: Text('Danh sách bệnh nhân'),
           centerTitle: true,
         ),
         body: isLoading

@@ -76,13 +76,13 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 idDeviceContainer(
-                  'Mã giám sát *',
+                  'Mã bệnh nhân *',
                   Icon(Icons.vpn_key),
                   TextInputType.visiblePassword,
                   idController,
                 ),
                 buildTextField(
-                  'Họ tên',
+                  'Họ và tên',
                   Icon(Icons.email),
                   TextInputType.text,
                   nameController,
@@ -106,7 +106,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                   sodienthoaiController,
                 ),
                 buildTextField(
-                  'địa chỉ',
+                  'Địa chỉ',
                   Icon(Icons.email),
                   TextInputType.text,
                   diachiController,
@@ -123,7 +123,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                   TextInputType.text,
                   giochieuController,
                 ),
-                buildDepartment('Mã địa điểm *'),
+                buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
             ),
@@ -290,7 +290,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
     return Container(
       child: DropdownButtonHideUnderline(
         child: DropdownButton<String>(
-          hint: Text("Chọn địa điểm"),
+          hint: Text("Chọn phòng"),
           value: currentSelectedValue,
           isDense: true,
           onChanged: (newValue) {

@@ -55,7 +55,7 @@ class _AddDepartmentScreenState extends State<AddDepartmentScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Thêm địa điểm',
+          'Thêm phòng',
         ),
         centerTitle: true,
       ),
@@ -81,13 +81,13 @@ class _AddDepartmentScreenState extends State<AddDepartmentScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildTextField(
-                  'Mã địa điểm *',
+                  'Mã phòng *',
                   Icon(Icons.vpn_key),
                   TextInputType.visiblePassword,
                   idController,
                 ),
                 buildTextField(
-                  'Địa chỉ * ',
+                  'Vị trí * ',
                   Icon(Icons.email),
                   TextInputType.text,
                   nameController,
