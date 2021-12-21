@@ -9,7 +9,6 @@ import 'package:technonhiptim/main/home_screen.dart';
 import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/model/nguoidung.dart';
 import 'package:technonhiptim/model/thietbi.dart';
-import 'package:technonhiptim/response/device_response.dart';
 import 'package:technonhiptim/response/nguoi_dung_response.dart';
 
 import '../helper/constants.dart' as Constants;
@@ -42,8 +41,31 @@ class _GiamSatState extends State<GiamSat> {
 
   @override
   void initState() {
-    initMqtt();
     isLoading = false;
+    // peoples.add(NguoiDung('p101','Bn001','Pham Hong Hoai','Nam','10/01/1994','36','105','96','mac'));
+    // peoples.add(NguoiDung('p101','Bn002','Ngo Quang Hai','Nam','10/01/1994','38','95','90','mac'));
+    // peoples.add(NguoiDung('p101','Bn003','Pham Thu Thuy','Nam','10/01/1994','37','90','94','mac'));
+    // peoples.forEach((element) {
+    //   if (double.tryParse(element.nhietdo) > 37.5) {
+    //     element.color = Colors.red;
+    //     setState(() {
+    //
+    //     });
+    //   }
+    //   if (double.tryParse(element.nhiptim) > 100) {
+    //     element.color1 = Colors.red;
+    //     setState(() {
+    //
+    //     });
+    //   }
+    //   if (double.tryParse(element.nongdooxy) < 95) {
+    //     element.color2 = Colors.red;
+    //     setState(() {
+    //
+    //     });
+    //   }
+    // });
+    initMqtt();
     getDevices();
 
     super.initState();
@@ -55,7 +77,7 @@ class _GiamSatState extends State<GiamSat> {
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
 
     Timer.periodic(
-      Duration(seconds: 30),
+      Duration(seconds: 10),
       (Timer timer) {
         getDevices();
       },
@@ -205,6 +227,7 @@ class _GiamSatState extends State<GiamSat> {
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
           itemCount: peoples.length,
           itemBuilder: (context, index) {
             return itemView(index);
@@ -233,7 +256,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].hoten,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -242,9 +265,9 @@ class _GiamSatState extends State<GiamSat> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].magiamsat,
+                      peoples[index].mabenhnhan,
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -255,7 +278,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       widget.madiadiem ?? '0',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -266,7 +289,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nhietdo ?? '0',
                       style: TextStyle(
-                        fontSize: 18,
+                        fontSize: 16,
                         color: peoples[index].color ?? Colors.black,
                       ),
                       textAlign: TextAlign.center,
@@ -278,7 +301,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nhiptim ?? '0',
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: peoples[index].color1 ?? Colors.black),
                       textAlign: TextAlign.center,
                     ),
@@ -289,7 +312,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nongdooxy ?? '0',
                       style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                           color: peoples[index].color2 ?? Colors.black),
                       textAlign: TextAlign.center,
                     ),
@@ -344,8 +367,6 @@ class _GiamSatState extends State<GiamSat> {
       case LOGIN_DEVICE:
         peoples = response.id.map((e) => NguoiDung.fromJson(e)).toList();
         setState(() {});
-        //{"errorCode":"0","message":"","id":[{"madiadiem":"D001","magiamsat":"Gs001","hoten":"nguyen van a","gioitinh":"nam","ngaysinh":"010997","nhietdo":"37","nongdooxy":"90","mac":"28:16:7F:8D:75:30"}
-        // ],"result":"true"}c
         peoples.forEach((element) {
           if (double.tryParse(element.nhietdo) > 37.5) {
             element.color = Colors.red;
@@ -370,10 +391,7 @@ class _GiamSatState extends State<GiamSat> {
         break;
     }
     pubTopic = '';
-    
-    // mqttClientWrapper.subscribe('ketquags', (_message) {
-    //   print('_GiamSatState.handleDevice $_message');
-    // });
+
     
   }
 

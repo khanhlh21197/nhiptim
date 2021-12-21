@@ -58,17 +58,16 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     mqttClientWrapper =
         MQTTClientWrapper(() => print('Success'), (message) => handle(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
-    getDepartment();
-
-    Future.delayed(Duration(seconds: 1), () {
-      getDevices();
-    });
+    // getDepartment();
+    //
+    // Future.delayed(Duration(seconds: 1), () {
+    //   getDevices();
+    // });
+    getDevices();
   }
 
   void getDevices() async {
     ThietBi t = ThietBi(
-      '',
-      '',
       '',
       '',
       '',
@@ -84,7 +83,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
   }
 
   void getDepartment() async {
-    Department d = Department('', '', '', Constants.mac);
+    Department d = Department('', '', Constants.mac);
     pubTopic = GET_DEPARTMENT;
     publishMessage(pubTopic, jsonEncode(d));
     showLoadingDialog();
@@ -104,20 +103,20 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     Map responseMap = jsonDecode(message);
     var response = DeviceResponse.fromJson(responseMap);
     switch (pubTopic) {
-      case GET_DEPARTMENT:
-        departments = response.id.map((e) => Department.fromJson(e)).toList();
-        dropDownItems.clear();
-        departments.forEach((element) {
-          dropDownItems.add(element.madiadiem);
-        });
-        hideLoadingDialog();
-        print('_AddScreenState.handle dia diem ${dropDownItems.length}');
-        break;
+      // case GET_DEPARTMENT:
+      //   departments = response.id.map((e) => Department.fromJson(e)).toList();
+      //   dropDownItems.clear();
+      //   departments.forEach((element) {
+      //     dropDownItems.add(element.maphong);
+      //   });
+      //   hideLoadingDialog();
+      //   print('_AddScreenState.handle dia diem ${dropDownItems.length}');
+      //   break;
       case GET_BENHNHAN:
         benhnhans = response.id.map((e) => ThietBi.fromJson(e)).toList();
         dropBenhnhan.clear();
         benhnhans.forEach((element) {
-          dropBenhnhan.add(element.magiamsat);
+          dropBenhnhan.add(element.mabenhnhan);
         });
         hideLoadingDialog();
         print('_AddScreenState.handle nguoi ${dropBenhnhan.length}');
@@ -179,7 +178,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
           Container(
             child: Column(
               children: [
-                buildDepartment('Mã phòng *'),
+                // buildDepartment('Mã phòng *'),
                 SizedBox(height: 5,),
                 buildBenhNhan('Mã bệnh nhân *'),
                 SizedBox(height: 5,),
@@ -264,6 +263,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
       child: ListView.builder(
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
+        physics: const NeverScrollableScrollPhysics(),
         itemCount: peoples.length,
         itemBuilder: (context, index) {
           return itemView(index);
@@ -273,100 +273,96 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
   }
 
   Widget itemView(int index) {
-    return SingleChildScrollView(
-      child: InkWell(
-        onTap: () async {},
+    return InkWell(
+      onTap: () async {},
+      child: Container(
+        padding: const EdgeInsets.symmetric(vertical: 1),
         child: SingleChildScrollView(
-          child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 1),
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  Container(
-                    height: 40,
-                    child: Row(
-                      children: [
-                        SizedBox(
-                          width: 1,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].hoten,
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 3,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].magiamsat,
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 1,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].madiadiem ?? '0',
-                            style: TextStyle(
-                              fontSize: 18,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 1,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].nhietdo ?? '0',
-                            style: TextStyle(
-                              fontSize: 18,
-                              color: peoples[index].color ?? Colors.black,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 1,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].nhiptim ?? '0',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: peoples[index].color1 ?? Colors.black),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 1,
-                        ),
-                        verticalLine(),
-                        Expanded(
-                          child: Text(
-                            peoples[index].nongdooxy ?? '0',
-                            style: TextStyle(
-                                fontSize: 18,
-                                color: peoples[index].color2 ?? Colors.black),
-                            textAlign: TextAlign.center,
-                          ),
-                          flex: 1,
-                        ),
-                        verticalLine(),
-                        SizedBox(
-                          width: 1,
-                        ),
-                      ],
+          child: Column(
+            children: [
+              Container(
+                height: 40,
+                child: Row(
+                  children: [
+                    SizedBox(
+                      width: 1,
                     ),
-                  ),
-                  horizontalLine(),
-                ],
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].hoten,
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 3,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].mabenhnhan,
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].maphong ?? '0',
+                        style: TextStyle(
+                          fontSize: 18,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].nhietdo ?? '0',
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: peoples[index].color ?? Colors.black,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].nhiptim ?? '0',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: peoples[index].color1 ?? Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].nongdooxy ?? '0',
+                        style: TextStyle(
+                            fontSize: 18,
+                            color: peoples[index].color2 ?? Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    SizedBox(
+                      width: 1,
+                    ),
+                  ],
+                ),
               ),
-            ),
+              horizontalLine(),
+            ],
           ),
         ),
       ),
@@ -407,16 +403,12 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
         TraCuu tc = TraCuu(
           currentSelectedMaDiaDiem ?? '',
           currentSelectedMaBenhNhan ?? '',
-          // selectedDateTu.toString().split(' ')[0] ?? '',
           tu,
-          // selectedDateDen.toString().split(' ')[0] ?? '',
           den,
           Constants.mac,
         );
         pubTopic = GET_TRACUU;
         publishMessage(pubTopic, jsonEncode(tc));
-        // navigatorPush(
-        //     context, KetQuaTraCuuScreen(),);
       },
       child: Text('Tìm kiếm', style: TextStyle(fontSize: 16)),
     );
@@ -480,7 +472,6 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
           Expanded(
             child: Text(
               tu,
-              // "${selectedDateTu.toString()}".split(' ')[0],
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ),
@@ -526,7 +517,6 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
           Expanded(
             child: Text(
               den,
-              // "${selectedDateDen.toString()}".split(' ')[0],
               style: TextStyle(fontSize: 13, fontWeight: FontWeight.bold),
             ),
           ),

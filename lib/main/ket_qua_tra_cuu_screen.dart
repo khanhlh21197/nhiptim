@@ -231,7 +231,7 @@ class _KetQuaTraCuuScreenState extends State<KetQuaTraCuuScreen> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].magiamsat,
+                      peoples[index].mabenhnhan,
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -242,7 +242,7 @@ class _KetQuaTraCuuScreenState extends State<KetQuaTraCuuScreen> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].madiadiem ?? '0',
+                      peoples[index].maphong ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),

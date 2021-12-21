@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 
 class NguoiDung {
-  String madiadiem;
-  String magiamsat;
+  String maphong;
+  String mabenhnhan;
   String hoten;
   String gioitinh;
   String ngaysinh;
@@ -15,12 +15,12 @@ class NguoiDung {
   Color color2;
   List<dynamic> id;
 
-  NguoiDung( this.madiadiem, this.magiamsat, this.hoten, this.gioitinh, this.ngaysinh,
+  NguoiDung( this.maphong, this.mabenhnhan, this.hoten, this.gioitinh, this.ngaysinh,
       this.nhietdo, this.nhiptim, this.nongdooxy, this.mac);
 
   NguoiDung.fromJson(Map<String, dynamic> json)
-      : madiadiem = json['madiadiem'],
-        magiamsat = json['magiamsat'],
+      : maphong = json['maphong'],
+        mabenhnhan = json['mabenhnhan'],
         hoten = json['hoten'],
         gioitinh = json['gioitinh'],
         ngaysinh = json['ngaysinh'],
@@ -30,8 +30,8 @@ class NguoiDung {
         mac = json['mac'];
 
   Map<String, dynamic> toJson() => {
-    'madiadiem': madiadiem,
-    'magiamsat': magiamsat,
+    'maphong': maphong,
+    'mabenhnhan': mabenhnhan,
     'hoten': hoten,
     'gioitinh': gioitinh,
     'ngaysinh': ngaysinh,
@@ -43,6 +43,6 @@ class NguoiDung {
 
   @override
   String toString() {
-    return '$madiadiem -$magiamsat -$hoten - $gioitinh - $ngaysinh - $nhietdo -$nhiptim - $nongdooxy';
+    return '$maphong -$mabenhnhan -$hoten - $gioitinh - $ngaysinh - $nhietdo -$nhiptim - $nongdooxy';
   }
 }

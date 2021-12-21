@@ -32,10 +32,9 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   @override
   void initState() {
-    // departments.add(Department('Hanoi ', 'h1.32', '012345', 'mac'));
-    // departments.add(Department('Bacninh ', 'h1.33', '014565', 'mac'));
-    // departments.add(Department('Hanoi','h1.32','098763','mac'));
-    // departments.add(Department('ThaiBinh', 'h1.33', '098763', 'mac'));
+    // departments.add(Department('phong 101', 'p101', 'mac'));
+    // departments.add(Department('phong 102', 'p102', 'mac'));
+    // departments.add(Department('phong 103', 'p103', 'mac'));
     // isLoading = false;
     initMqtt();
 
@@ -50,7 +49,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
   }
 
   void getDepartments() {
-    Department department = Department('', '', '', Constants.mac);
+    Department department = Department('', '', Constants.mac);
     pubTopic = LOGIN_KHOA;
     publishMessage(pubTopic, jsonEncode(department));
     showLoadingDialog();
@@ -133,12 +132,12 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         children: [
           buildTextLabel('STT', 1),
           verticalLine(),
-          buildTextLabel('Mã', 2),
+          buildTextLabel('Mã', 3),
           verticalLine(),
           buildTextLabel('Ví trí', 3),
           verticalLine(),
-          buildTextLabel('Sđt', 3),
-          verticalLine(),
+          // buildTextLabel('Sđt', 3),
+          // verticalLine(),
           buildTextLabel('Sửa', 1),
         ],
       ),
@@ -177,7 +176,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         navigatorPush(
             context,
             GiamSat(
-              madiadiem: departments[index].madiadiem,
+              madiadiem: departments[index].maphong,
             ));
       },
       child: Container(
@@ -190,12 +189,10 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
                 children: [
                   buildTextData('${index + 1}', 1),
                   verticalLine(),
-                  buildTextData(departments[index].madiadiem ?? '', 2),
+                  buildTextData(departments[index].maphong ?? '', 3),
                   verticalLine(),
                   buildTextData(
-                      departments[index].diachi ?? '', 3),
-                  verticalLine(),
-                  buildTextData(departments[index].sodienthoai ?? '', 3),
+                      departments[index].tenphong ?? '', 3),
                   verticalLine(),
                   buildEditBtn(index, 1),
                 ],

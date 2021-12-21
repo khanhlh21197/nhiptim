@@ -1,30 +1,30 @@
 import 'package:flutter/cupertino.dart';
 
 class Camera {
-  String macam;
-  String madiadiem;
-  String vitri;
+  String mathietbi;
+  String maphong;
+  String mabenhnhan;
   String mac;
   Color color;
   List<dynamic> id;
 
-  Camera(this.macam, this.madiadiem, this.vitri, this.mac);
+  Camera(this.mathietbi, this.maphong, this.mabenhnhan, this.mac);
 
   Camera.fromJson(Map<String, dynamic> json)
-      : macam = json['macam'],
-        madiadiem = json['madiadiem'],
-        vitri = json['vitri'],
+      : mathietbi = json['mathietbi'],
+        maphong = json['maphong'],
+        mabenhnhan = json['mabenhnhan'],
         mac = json['mac'];
 
   Map<String, dynamic> toJson() => {
-    'macam': macam,
-    'madiadiem': madiadiem,
-    'vitri': vitri,
+    'mathietbi': mathietbi,
+    'maphong': maphong,
+    'mabenhnhan': mabenhnhan,
     'mac': mac,
   };
 
   @override
   String toString() {
-    return '$macam - $madiadiem - $vitri';
+    return '$mathietbi - $maphong - $mabenhnhan';
   }
 }

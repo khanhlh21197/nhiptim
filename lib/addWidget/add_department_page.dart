@@ -87,17 +87,17 @@ class _AddDepartmentScreenState extends State<AddDepartmentScreen> {
                   idController,
                 ),
                 buildTextField(
-                  'Vị trí * ',
+                  'Tên phòng * ',
                   Icon(Icons.email),
                   TextInputType.text,
                   nameController,
                 ),
-                buildTextField(
-                  'Sdt *',
-                  Icon(Icons.vpn_key),
-                  TextInputType.visiblePassword,
-                  sdtController,
-                ),
+                // buildTextField(
+                //   'Sdt *',
+                //   Icon(Icons.vpn_key),
+                //   TextInputType.number,
+                //   sdtController,
+                // ),
                 buildButton(),
               ],
             ),
@@ -178,7 +178,6 @@ class _AddDepartmentScreenState extends State<AddDepartmentScreen> {
     Department department = Department(
       nameController.text,
       idController.text,
-      sdtController.text,
       Constants.mac,
     );
     publishMessage('registerdiadiem', jsonEncode(department));

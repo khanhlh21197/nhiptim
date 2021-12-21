@@ -44,9 +44,8 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
   }
 
   void initController() async {
-    nameController.text = widget.department.diachi;
-    idController.text = widget.department.madiadiem;
-    sdtController.text = widget.department.sodienthoai;
+    nameController.text = widget.department.tenphong;
+    idController.text = widget.department.maphong;
 
   }
 
@@ -68,23 +67,23 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 buildTextField(
-                  'Vị trí',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  nameController,
-                ),
-                buildTextField(
                   'Mã',
                   Icon(Icons.vpn_key),
                   TextInputType.visiblePassword,
                   idController,
                 ),
                 buildTextField(
-                  'Số điện thoại',
-                  Icon(Icons.vpn_key),
-                  TextInputType.number,
-                  sdtController,
+                  'Tên phòng',
+                  Icon(Icons.email),
+                  TextInputType.text,
+                  nameController,
                 ),
+                // buildTextField(
+                //   'Số điện thoại',
+                //   Icon(Icons.vpn_key),
+                //   TextInputType.number,
+                //   sdtController,
+                // ),
                 deleteButton(),
                 buildButton(),
               ],
@@ -164,8 +163,8 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
                 new FlatButton(
                   onPressed: () {
                     pubTopic = DELETE_KHOA;
-                    var d = Department(widget.department.diachi,
-                        widget.department.madiadiem,widget.department.sodienthoai, Constants.mac);
+                    var d = Department(widget.department.tenphong,
+                        widget.department.maphong, Constants.mac);
                     publishMessage(pubTopic, jsonEncode(d));
                   },
                   child: new Text(
@@ -218,7 +217,6 @@ class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
                 edittedDepartment = Department(
                   nameController.text,
                   idController.text,
-                  sdtController.text,
                   Constants.mac,
                 );
                 pubTopic = UPDATE_KHOA;

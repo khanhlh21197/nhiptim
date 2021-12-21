@@ -8,15 +8,15 @@ import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/model/department.dart';
+import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
 import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
 
 class AddScreen extends StatefulWidget {
-  final String quyen;
 
-  const AddScreen({Key key, this.quyen}) : super(key: key);
+  const AddScreen({Key key,}) : super(key: key);
 
   @override
   _AddScreenState createState() => _AddScreenState();
@@ -24,17 +24,22 @@ class AddScreen extends StatefulWidget {
 
 class _AddScreenState extends State<AddScreen> {
   static const GET_DEPARTMENT = 'getdiadiem';
+  static const GET_BENHNHAN = 'getF0';
+
+  String pubTopic;
 
   MQTTClientWrapper mqttClientWrapper;
   SharedPrefsHelper sharedPrefsHelper;
   List<Department> departments = List();
+  List<ThietBi> benhnhans = List();
   List<String> dropDownItems = List();
+  List<String> dropBenhNhan = List();
 
   bool isLoading = false;
 
   @override
   void initState() {
-    showLoadingDialog();
+    // showLoadingDialog();
     initMqtt();
     super.initState();
   }
@@ -44,8 +49,38 @@ class _AddScreenState extends State<AddScreen> {
         MQTTClientWrapper(() => print('Success'), (message) => handle(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
 
-    Department d = Department('', '','', Constants.mac);
-    publishMessage(GET_DEPARTMENT, jsonEncode(d));
+    // Department d = Department('', '', Constants.mac);
+    // publishMessage(GET_DEPARTMENT, jsonEncode(d));
+
+    getDevices();
+
+    Future.delayed(Duration(seconds: 1), () {
+      getDepartment();
+    });
+
+  }
+
+  void getDevices() async {
+    ThietBi t = ThietBi(
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      Constants.mac,
+    );
+    pubTopic = GET_BENHNHAN;
+    publishMessage(pubTopic, jsonEncode(t));
+    showLoadingDialog();
+  }
+
+  void getDepartment() async {
+    Department d = Department('', '', Constants.mac);
+    pubTopic = GET_DEPARTMENT;
+    publishMessage(pubTopic, jsonEncode(d));
+    showLoadingDialog();
   }
 
   @override
@@ -99,7 +134,7 @@ class _AddScreenState extends State<AddScreen> {
             break;
           case 3:
             navigatorPush(context, AddCameraScreen(
-              dropDownItems: dropDownItems,
+              dropDownItems: dropDownItems, dropBenhNhan: dropBenhNhan,
             ));
         }
       },
@@ -145,11 +180,26 @@ class _AddScreenState extends State<AddScreen> {
   void handle(String message) {
     Map responseMap = jsonDecode(message);
     var response = DeviceResponse.fromJson(responseMap);
-    departments = response.id.map((e) => Department.fromJson(e)).toList();
-    dropDownItems.clear();
-    departments.forEach((element) {
-      dropDownItems.add(element.madiadiem);
-    });
+    switch (pubTopic) {
+      case GET_DEPARTMENT:
+        departments = response.id.map((e) => Department.fromJson(e)).toList();
+        dropDownItems.clear();
+        departments.forEach((element) {
+          dropDownItems.add(element.maphong);
+        });
+        hideLoadingDialog();
+        print('_AddScreenState.handle dia diem ${dropDownItems[0]}');
+        break;
+      case GET_BENHNHAN:
+        benhnhans = response.id.map((e) => ThietBi.fromJson(e)).toList();
+        dropBenhNhan.clear();
+        benhnhans.forEach((element) {
+          dropBenhNhan.add(element.mabenhnhan);
+        });
+        hideLoadingDialog();
+        print('_AddScreenState.handle nguoi ${dropBenhNhan.length}');
+        break;
+    }
     hideLoadingDialog();
     print('_AddScreenState.handle ${dropDownItems.length}');
   }

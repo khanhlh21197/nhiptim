@@ -5,21 +5,19 @@ import 'package:floor/floor.dart';
 @entity
 class Department {
   @primaryKey
-  @ColumnInfo(name: 'diachi', nullable: false)
-  final String diachi;
-  @ColumnInfo(name: 'madiadiem', nullable: false)
-  final String madiadiem;
-  @ColumnInfo(name: 'sodienthoai', nullable: false)
-  final String sodienthoai;
+  @ColumnInfo(name: 'tenphong', nullable: false)
+  final String tenphong;
+  @ColumnInfo(name: 'maphong', nullable: false)
+  final String maphong;
   @ColumnInfo(name: 'mac', nullable: false)
   String mac;
 
 
-  Department(this.diachi, this.madiadiem, this.sodienthoai, this.mac);
+  Department(this.tenphong, this.maphong,  this.mac);
 
-  // String get departmentDiachiDecode {
+  // String get departmenttenphongDecode {
   //   try {
-  //     String s = diachi;
+  //     String s = tenphong;
   //     List<int> ints = List();
   //     s = s.replaceAll('[', '');
   //     s = s.replaceAll(']', '');
@@ -29,20 +27,18 @@ class Department {
   //     }
   //     return utf8.decode(ints);
   //   } catch (e) {
-  //     return diachi;
+  //     return tenphong;
   //   }
   // }
 
   Department.fromJson(Map<String, dynamic> json)
-      : diachi = json['diachi'],
-        madiadiem = json['madiadiem'],
-        sodienthoai = json['sodienthoai'],
+      : tenphong = json['tenphong'],
+        maphong = json['maphong'],
         mac = json['mac'];
 
   Map<String, dynamic> toJson() => {
-        'diachi': diachi,
-        'madiadiem': madiadiem,
-        'sodienthoai': sodienthoai,
+        'tenphong': tenphong,
+        'maphong': maphong,
         'mac': mac,
       };
 }

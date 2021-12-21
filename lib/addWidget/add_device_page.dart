@@ -78,7 +78,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                 idDeviceContainer(
                   'Mã bệnh nhân *',
                   Icon(Icons.vpn_key),
-                  TextInputType.visiblePassword,
+                  TextInputType.text,
                   idController,
                 ),
                 buildTextField(
@@ -102,7 +102,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                 buildTextField(
                   'Số điện thoại',
                   Icon(Icons.email),
-                  TextInputType.text,
+                  TextInputType.number,
                   sodienthoaiController,
                 ),
                 buildTextField(
@@ -111,18 +111,18 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
                   TextInputType.text,
                   diachiController,
                 ),
-                buildTextField(
-                  'Giờ sáng',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  giosangController,
-                ),
-                buildTextField(
-                  'Giờ chiều',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  giochieuController,
-                ),
+                // buildTextField(
+                //   'Giờ sáng',
+                //   Icon(Icons.email),
+                //   TextInputType.text,
+                //   giosangController,
+                // ),
+                // buildTextField(
+                //   'Giờ chiều',
+                //   Icon(Icons.email),
+                //   TextInputType.text,
+                //   giochieuController,
+                // ),
                 buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
@@ -247,8 +247,6 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
       ngaysinhController.text,
       sodienthoaiController.text,
       diachiController.text,
-      giosangController.text,
-      giochieuController.text,
       Constants.mac,
     );
     publishMessage('registerF0', jsonEncode(tb));

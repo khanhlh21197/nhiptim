@@ -213,7 +213,7 @@ class _BenhNhanState extends State<BenhNhan> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].magiamsat ?? '0',
+                      peoples[index].maphong ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),
@@ -224,7 +224,7 @@ class _BenhNhanState extends State<BenhNhan> {
                   verticalLine(),
                   Expanded(
                     child: Text(
-                      peoples[index].madiadiem ?? '0',
+                      peoples[index].mabenhnhan ?? '0',
                       style: TextStyle(
                         fontSize: 18,
                       ),

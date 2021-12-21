@@ -161,7 +161,7 @@ class _DetailScreenState extends State<DetailScreen> {
   Widget buildItem(ThietBi tb) {
     return GestureDetector(
       onTap: () {
-        _selectedDevice = tb.magiamsat;
+        _selectedDevice = tb.maphong;
         // navigatorPush(context, RollingDoor());
         // getProducts();
       },
@@ -184,7 +184,7 @@ class _DetailScreenState extends State<DetailScreen> {
             //   ),
             // ),
             Text(
-              tb.magiamsat ?? "",
+              tb.mabenhnhan ?? "",
               style: TextStyle(
                 // fontWeight: FontWeight.bold,
                 color: tb.color ?? Colors.black,

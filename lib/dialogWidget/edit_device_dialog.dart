@@ -76,15 +76,13 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   }
 
   void initController() async {
-    idController.text = widget.thietbi.magiamsat;
-    currentSelectedValue = widget.thietbi.madiadiem;
+    idController.text = widget.thietbi.mabenhnhan;
+    currentSelectedValue = widget.thietbi.maphong;
     nameController.text = widget.thietbi.hoten;
     gioitinhController.text = widget.thietbi.gioitinh;
     sodienthoaiController.text = widget.thietbi.sodienthoai;
     diachiController.text = widget.thietbi.diachi;
     ngaysinhController.text = widget.thietbi.ngaysinh;
-    giosangController.text = widget.thietbi.giosang;
-    giochieuController.text = widget.thietbi.giochieu;
   }
 
   @override
@@ -140,18 +138,18 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
                   TextInputType.text,
                   diachiController
                 ),
-                buildTextField(
-                  'Giờ sáng',
-                  Icon(Icons.vpn_key),
-                  TextInputType.text,
-                  giosangController
-                ),
-                buildTextField(
-                  'Giờ chiều',
-                  Icon(Icons.vpn_key),
-                  TextInputType.text,
-                  giochieuController
-                ),
+                // buildTextField(
+                //   'Giờ sáng',
+                //   Icon(Icons.vpn_key),
+                //   TextInputType.text,
+                //   giosangController
+                // ),
+                // buildTextField(
+                //   'Giờ chiều',
+                //   Icon(Icons.vpn_key),
+                //   TextInputType.text,
+                //   giochieuController
+                // ),
                 buildTextField(
                   'Giới tính',
                   Icon(Icons.vpn_key),
@@ -297,15 +295,13 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
                   onPressed: () {
                     pubTopic = DELETE_DEVICE;
                     var d = ThietBi(
-                      widget.thietbi.magiamsat,
-                      widget.thietbi.madiadiem,
+                      widget.thietbi.mabenhnhan,
+                      widget.thietbi.maphong,
                       widget.thietbi.hoten,
                       widget.thietbi.gioitinh,
                       widget.thietbi.ngaysinh,
                       widget.thietbi.sodienthoai,
                       widget.thietbi.diachi,
-                      widget.thietbi.giosang,
-                      widget.thietbi.giochieu,
                       Constants.mac,
                     );
                     publishMessage(pubTopic, jsonEncode(d));
@@ -376,8 +372,6 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
       ngaysinhController.text,
       sodienthoaiController.text,
       diachiController.text,
-      giosangController.text,
-      giochieuController.text,
       Constants.mac,
     );
     pubTopic = UPDATE_DEVICE;

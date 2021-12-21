@@ -20,6 +20,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   final Map loginResponse;
   int _selectedIndex = 0;
+  final PageController _pageController = PageController();
   int quyen;
   SharedPrefsHelper sharedPrefsHelper;
 
@@ -94,12 +95,14 @@ class _HomeScreenState extends State<HomeScreen> {
     setState(() {
       _selectedIndex = index;
     });
+    _pageController.jumpToPage(index);
+
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBody(),
+      body: buildBody2(),
       bottomNavigationBar: bottomBar(),
     );
   }
@@ -110,6 +113,24 @@ class _HomeScreenState extends State<HomeScreen> {
       child: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
+    );
+  }
+
+  Widget buildBody2() {
+    return PageView(
+      controller: _pageController,
+      children: [
+        DepartmentListScreen(),
+        DeviceListScreen(),
+        AddScreen(),
+        TraCuuScreen(),
+      ],
+      onPageChanged: (page) {
+        setState(() {
+          _selectedIndex = page;
+        });
+        _pageController.jumpToPage(page);
+      },
     );
   }
 

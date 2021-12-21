@@ -7,13 +7,17 @@ import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/model/camera.dart';
+import 'package:technonhiptim/model/department.dart';
+import 'package:technonhiptim/model/thietbi.dart';
+import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
 
 class AddCameraScreen extends StatefulWidget {
   final List<String> dropDownItems;
+  final List<String> dropBenhNhan;
 
-  const AddCameraScreen({Key key, this.dropDownItems}) : super(key: key);
+  const AddCameraScreen({Key key, this.dropDownItems, this.dropBenhNhan}) : super(key: key);
 
   @override
   _AddCameraScreenState createState() => _AddCameraScreenState();
@@ -21,6 +25,8 @@ class AddCameraScreen extends StatefulWidget {
 
 class _AddCameraScreenState extends State<AddCameraScreen> {
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
+
+  String pubTopic;
 
   MQTTClientWrapper mqttClientWrapper;
   SharedPrefsHelper sharedPrefsHelper;
@@ -30,6 +36,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
   final vitriController = TextEditingController();
 
   String currentSelectedValue;
+  String currentSelectedMaBenhNhan;
 
   @override
   void initState() {
@@ -74,17 +81,85 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
                   TextInputType.visiblePassword,
                   idController,
                 ),
-                buildTextField(
-                  'Tên thiết bị *',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  vitriController,
-                ),
+                // buildTextField(
+                //   'Tên thiết bị *',
+                //   Icon(Icons.email),
+                //   TextInputType.text,
+                //   vitriController,
+                // ),
+                buildBenhNhan('Mã bệnh nhân *'),
                 buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
             ),
           ),
+        ),
+      ),
+    );
+  }
+
+
+  Future<void> publishMessage(String topic, String message) async {
+    if (mqttClientWrapper.connectionState ==
+        MqttCurrentConnectionState.CONNECTED) {
+      mqttClientWrapper.publishMessage(topic, message);
+    } else {
+      await initMqtt();
+      mqttClientWrapper.publishMessage(topic, message);
+    }
+  }
+
+  Widget buildBenhNhan(String label) {
+    return Container(
+      height: 40,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(
+          5,
+        ),
+        border: Border.all(
+          color: Colors.green,
+        ),
+      ),
+      margin: const EdgeInsets.symmetric(
+        horizontal: 32,
+        vertical: 8,
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            label,
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(
+            width: 40,
+          ),
+          dropdownBenhNhan(),
+        ],
+      ),
+    );
+  }
+
+  Widget dropdownBenhNhan() {
+    return Container(
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          hint: Text("Chọn bn "),
+          value: currentSelectedMaBenhNhan,
+          isDense: true,
+          onChanged: (newValue) {
+            setState(() {
+              currentSelectedMaBenhNhan = newValue;
+            });
+            print(currentSelectedMaBenhNhan);
+          },
+          items: widget.dropBenhNhan.map((String value) {
+            return DropdownMenuItem<String>(
+              value: value,
+              child: Text(value),
+            );
+          }).toList(),
         ),
       ),
     );
@@ -199,7 +274,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
     Camera camera = Camera(
       idController.text,
       currentSelectedValue,
-      vitriController.text,
+      currentSelectedMaBenhNhan,
       Constants.mac,
     );
     publishMessage('registercam', jsonEncode(camera));
@@ -273,6 +348,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
     mqttClientWrapper =
         MQTTClientWrapper(() => print('Success'), (message) => handle(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
+
   }
 
   void handle(String message) {
@@ -280,16 +356,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
     if (responseMap['result'] == 'true' && responseMap['errorCode'] == '0') {
       Navigator.pop(context);
     }
-  }
 
-  Future<void> publishMessage(String topic, String message) async {
-    if (mqttClientWrapper.connectionState ==
-        MqttCurrentConnectionState.CONNECTED) {
-      mqttClientWrapper.publishMessage(topic, message);
-    } else {
-      await initMqtt();
-      mqttClientWrapper.publishMessage(topic, message);
-    }
   }
 
   @override
