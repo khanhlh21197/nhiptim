@@ -53,6 +53,7 @@ dependencies:
   clay_containers: ^0.2.2
   sleek_circular_slider: ^1.1.0
   flutter_datetime_picker:
+  circular_bottom_navigation:
 
 dev_dependencies:
   flutter_test:

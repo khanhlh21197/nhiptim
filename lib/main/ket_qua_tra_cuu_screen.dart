@@ -54,7 +54,7 @@ class _KetQuaTraCuuScreenState extends State<KetQuaTraCuuScreen> {
   }
 
   void getDevices() async {
-    NguoiDung peoples = NguoiDung('', '', '','',  '', '', '', '', Constants.mac);
+    NguoiDung peoples = NguoiDung('', '', '','',  '', '', '', '', '', Constants.mac);
     pubTopic = LOGIN_DEVICE;
     publishMessage(pubTopic, jsonEncode(peoples));
     // showLoadingDialog();

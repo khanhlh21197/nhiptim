@@ -45,7 +45,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   SharedPrefsHelper sharedPrefsHelper;
   String pubTopic = '';
   String currentSelectedValue;
-  ThietBi updatedDevice;
+  ThietBi updatloedDevice;
 
   @override
   void initState() {

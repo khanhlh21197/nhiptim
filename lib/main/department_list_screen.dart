@@ -35,7 +35,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
     // departments.add(Department('phong 101', 'p101', 'mac'));
     // departments.add(Department('phong 102', 'p102', 'mac'));
     // departments.add(Department('phong 103', 'p103', 'mac'));
-    // isLoading = false;
+    isLoading = false;
     initMqtt();
 
     super.initState();
@@ -93,12 +93,13 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
           automaticallyImplyLeading: false,
-          title: Text('Danh sách phòng'),
+          title: Text('Danh sách phòng', style: TextStyle(color: Colors.white,),),
           centerTitle: true,
           actions: [
             IconButton(
-                icon: Icon(Icons.logout),
+                icon: Icon(Icons.logout, color: Colors.black,),
                 onPressed: () {
                   navigatorPushAndRemoveUntil(context, LoginPage());
                 }),

@@ -41,7 +41,7 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
     // tbs.add(ThietBi('Bn001', 'p101', 'Pham Hong Hoai', 'Nam', '19/01/1994', '0987654321', 'Ha Noi', 'mac'));
     // tbs.add(ThietBi('Bn001', 'p101', 'Ngo Quang Hai', 'Nam', '01/09/1997', '0987654321', 'Ha Noi', 'mac'));
     // tbs.add(ThietBi('Bn001', 'p101', 'Pham Thu Thuy', 'Nu', '22/09/1994', '0987654321', 'Ha Noi', 'mac'));
-    // isLoading = false;
+    isLoading = false;
     super.initState();
   }
 
@@ -111,15 +111,11 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
       onWillPop: _onWillPop,
       child: Scaffold(
         appBar: AppBar(
+          backgroundColor: Colors.blueAccent,
           automaticallyImplyLeading: false,
           actions: [
-            // IconButton(
-            //     icon: Icon(Icons.logout),
-            //     onPressed: () {
-            //       navigatorPushAndRemoveUntil(context, LoginPage());
-            //     }),
           ],
-          title: Text('Danh sách bệnh nhân'),
+          title: Text('Danh sách bệnh nhân',style: TextStyle(color: Colors.white),),
           centerTitle: true,
         ),
         body: isLoading

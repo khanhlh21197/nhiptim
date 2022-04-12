@@ -20,7 +20,7 @@ class TraCuuScreen extends StatefulWidget {
 }
 
 class _TraCuuScreenState extends State<TraCuuScreen> {
-  static const GET_DEPARTMENT = 'getdiadiem';
+  // static const GET_DEPARTMENT = 'getdiadiem';
   static const GET_BENHNHAN = 'getF0';
   static const GET_TRACUU = 'gettracuu';
 
@@ -33,7 +33,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
   String den = '';
   DateTime selectedDateTu;
   DateTime selectedDateDen;
-  var dropDownItems = ['  '];
+  // var dropDownItems = ['  '];
   var dropBenhnhan = ['  '];
 
   MQTTClientWrapper mqttClientWrapper;
@@ -82,12 +82,12 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     showLoadingDialog();
   }
 
-  void getDepartment() async {
-    Department d = Department('', '', Constants.mac);
-    pubTopic = GET_DEPARTMENT;
-    publishMessage(pubTopic, jsonEncode(d));
-    showLoadingDialog();
-  }
+  // void getDepartment() async {
+  //   Department d = Department('', '', Constants.mac);
+  //   pubTopic = GET_DEPARTMENT;
+  //   publishMessage(pubTopic, jsonEncode(d));
+  //   showLoadingDialog();
+  // }
 
   Future<void> publishMessage(String topic, String message) async {
     if (mqttClientWrapper.connectionState ==
@@ -144,6 +144,15 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
 
               });
             }
+            if (element.dungdichtruyen == 'con') {
+              setState(() {
+              });
+            }
+            if (element.dungdichtruyen == 'het') {
+              element.color3 = Colors.red;
+              setState(() {
+              });
+            }
           });
           hideLoadingDialog();
           break;
@@ -168,8 +177,9 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         automaticallyImplyLeading: false,
-        title: Text('Tìm kiếm'),
+        title: Text('Tìm kiếm',style: TextStyle(color: Colors.white),),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -219,7 +229,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
   Widget buildTableTitle() {
     return SingleChildScrollView(
       child: Container(
-        height: 40,
+        height: 50,
         child: Row(
           children: [
             SizedBox(
@@ -228,15 +238,17 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
             verticalLine(),
             buildTextLabel('Họ và tên', 3),
             verticalLine(),
-            buildTextLabel('Mã bn', 1),
+            buildTextLabel('Mã bệnh nhân', 1),
             verticalLine(),
-            buildTextLabel('Mã ph', 1),
+            buildTextLabel('Mã phòng', 1),
             verticalLine(),
-            buildTextLabel('Nđộ', 1),
+            buildTextLabel('Nhiệt độ', 1),
             verticalLine(),
-            buildTextLabel('Ntim', 1),
+            buildTextLabel('Nhịp tim', 1),
             verticalLine(),
-            buildTextLabel('Nđ oxy', 1),
+            buildTextLabel('Nồng độ oxy', 1),
+            verticalLine(),
+            buildTextLabel('Dịch truyền', 1),
             verticalLine(),
             SizedBox(
               width: 1,
@@ -251,7 +263,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
     return Expanded(
       child: Text(
         data,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
       flex: flexValue,
@@ -264,7 +276,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
         scrollDirection: Axis.vertical,
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
-        itemCount: peoples.length,
+        itemCount: peoples.length ?? 0,
         itemBuilder: (context, index) {
           return itemView(index);
         },
@@ -292,7 +304,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].hoten,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -303,7 +315,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].mabenhnhan,
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 16,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -314,7 +326,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].maphong ?? '0',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -325,7 +337,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].nhietdo ?? '0',
                         style: TextStyle(
-                          fontSize: 18,
+                          fontSize: 14,
                           color: peoples[index].color ?? Colors.black,
                         ),
                         textAlign: TextAlign.center,
@@ -337,7 +349,7 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].nhiptim ?? '0',
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: peoples[index].color1 ?? Colors.black),
                         textAlign: TextAlign.center,
                       ),
@@ -348,8 +360,20 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
                       child: Text(
                         peoples[index].nongdooxy ?? '0',
                         style: TextStyle(
-                            fontSize: 18,
+                            fontSize: 14,
                             color: peoples[index].color2 ?? Colors.black),
+                        textAlign: TextAlign.center,
+                      ),
+                      flex: 1,
+                    ),
+                    verticalLine(),
+                    Expanded(
+                      child: Text(
+                        peoples[index].dungdichtruyen,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: peoples[index].color3 ?? Colors.black
+                        ),
                         textAlign: TextAlign.center,
                       ),
                       flex: 1,
@@ -555,61 +579,61 @@ class _TraCuuScreenState extends State<TraCuuScreen> {
       });
   }
 
-  Widget buildDepartment(String label) {
-    return Container(
-      height: 40,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          5,
-        ),
-        border: Border.all(
-          color: Colors.green,
-        ),
-      ),
-      // margin: const EdgeInsets.symmetric(
-      //   horizontal: 32,
-      //   vertical: 8,
-      // ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(
-            width: 70,
-          ),
-          dropdownDepartment(),
-        ],
-      ),
-    );
-  }
+  // Widget buildDepartment(String label) {
+  //   return Container(
+  //     height: 40,
+  //     decoration: BoxDecoration(
+  //       borderRadius: BorderRadius.circular(
+  //         5,
+  //       ),
+  //       border: Border.all(
+  //         color: Colors.green,
+  //       ),
+  //     ),
+  //     // margin: const EdgeInsets.symmetric(
+  //     //   horizontal: 32,
+  //     //   vertical: 8,
+  //     // ),
+  //     padding: const EdgeInsets.symmetric(horizontal: 16),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.start,
+  //       children: [
+  //         Text(
+  //           label,
+  //           style: TextStyle(fontSize: 16),
+  //         ),
+  //         SizedBox(
+  //           width: 70,
+  //         ),
+  //         dropdownDepartment(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
-  Widget dropdownDepartment() {
-    return Container(
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          hint: Text("Chọn phòng"),
-          value: currentSelectedMaDiaDiem,
-          isDense: true,
-          onChanged: (newValue) {
-            setState(() {
-              currentSelectedMaDiaDiem = newValue;
-            });
-            print(currentSelectedMaDiaDiem);
-          },
-          items: dropDownItems.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
+  // Widget dropdownDepartment() {
+  //   return Container(
+  //     child: DropdownButtonHideUnderline(
+  //       child: DropdownButton<String>(
+  //         hint: Text("Chọn phòng"),
+  //         value: currentSelectedMaDiaDiem,
+  //         isDense: true,
+  //         onChanged: (newValue) {
+  //           setState(() {
+  //             currentSelectedMaDiaDiem = newValue;
+  //           });
+  //           print(currentSelectedMaDiaDiem);
+  //         },
+  //         items: dropDownItems.map((String value) {
+  //           return DropdownMenuItem<String>(
+  //             value: value,
+  //             child: Text(value),
+  //           );
+  //         }).toList(),
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget buildBenhNhan(String label) {
     return Container(

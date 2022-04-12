@@ -24,8 +24,8 @@ class EditDepartmentDialog extends StatefulWidget {
 }
 
 class _EditDepartmentDialogState extends State<EditDepartmentDialog> {
-  static const UPDATE_KHOA = 'updatediadiem';
-  static const DELETE_KHOA = 'deletediadiem';
+  static const UPDATE_KHOA = 'updatephong';
+  static const DELETE_KHOA = 'deletephong';
 
   final scrollController = ScrollController();
   final nameController = TextEditingController();

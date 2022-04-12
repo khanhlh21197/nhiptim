@@ -33,6 +33,7 @@ class _GiamSatState extends State<GiamSat> {
   MQTTClientWrapper mqttClientWrapper;
 
   String pubTopic;
+  String dungdichtruyen = '';
   int selectedIndex;
   List<Department> departments = List();
   var dropDownItems = [''];
@@ -42,9 +43,9 @@ class _GiamSatState extends State<GiamSat> {
   @override
   void initState() {
     isLoading = false;
-    // peoples.add(NguoiDung('p101','Bn001','Pham Hong Hoai','Nam','10/01/1994','36','105','96','mac'));
-    // peoples.add(NguoiDung('p101','Bn002','Ngo Quang Hai','Nam','10/01/1994','38','95','90','mac'));
-    // peoples.add(NguoiDung('p101','Bn003','Pham Thu Thuy','Nam','10/01/1994','37','90','94','mac'));
+    // peoples.add(NguoiDung('p101','Bn001','Pham Hong Hoai','Nam','10/01/1994','36','105','96', 'het','mac'));
+    // peoples.add(NguoiDung('p101','Bn002','Ngo Quang Hai','Nam','10/01/1994','38','95','90','con','mac'));
+    // peoples.add(NguoiDung('p101','Bn003','Pham Thu Thuy','Nam','10/01/1994','37','90','94','con','mac'));
     // peoples.forEach((element) {
     //   if (double.tryParse(element.nhietdo) > 37.5) {
     //     element.color = Colors.red;
@@ -62,6 +63,14 @@ class _GiamSatState extends State<GiamSat> {
     //     element.color2 = Colors.red;
     //     setState(() {
     //
+    //     });
+    //   }
+    //   if (element.dungdichtruyen == 'con') {
+    //     setState(() {
+    //     });
+    //   } else if (element.dungdichtruyen == 'het'){
+    //     element.color3 = Colors.red;
+    //     setState(() {
     //     });
     //   }
     // });
@@ -89,7 +98,7 @@ class _GiamSatState extends State<GiamSat> {
   }
 
   void getDevices() async {
-    NguoiDung peoples = NguoiDung(widget.madiadiem, '', '', '', '', '', '', '', Constants.mac);
+    NguoiDung peoples = NguoiDung(widget.madiadiem, '', '', '', '', '', '', '', '', Constants.mac);
     pubTopic = LOGIN_DEVICE;
     publishMessage(pubTopic, jsonEncode(peoples));
     // showLoadingDialog();
@@ -183,7 +192,7 @@ class _GiamSatState extends State<GiamSat> {
   Widget buildTableTitle() {
     return Container(
       // color: Colors.yellow,
-      height: 40,
+      height: 50,
       child: Row(
         children: [
           SizedBox(
@@ -192,15 +201,17 @@ class _GiamSatState extends State<GiamSat> {
           verticalLine(),
           buildTextLabel('Họ và tên', 3),
           verticalLine(),
-          buildTextLabel('Mã bn', 1),
+          buildTextLabel('Mã bệnh nhân', 1),
           verticalLine(),
-          buildTextLabel('Mã ph', 1),
+          buildTextLabel('Mã phòng', 1),
           verticalLine(),
-          buildTextLabel('Nđộ', 1),
+          buildTextLabel('Nhiệt độ', 1),
           verticalLine(),
-          buildTextLabel('Ntim', 1),
+          buildTextLabel('Nhịp tim', 1),
           verticalLine(),
-          buildTextLabel('Nđ oxy', 1),
+          buildTextLabel('Nồng độ oxy', 1),
+          verticalLine(),
+          buildTextLabel('Dịch truyền', 1),
           verticalLine(),
           SizedBox(
             width: 1,
@@ -214,7 +225,7 @@ class _GiamSatState extends State<GiamSat> {
     return Expanded(
       child: Text(
         data,
-        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+        style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
         textAlign: TextAlign.center,
       ),
       flex: flexValue,
@@ -256,7 +267,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].hoten,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -267,7 +278,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].mabenhnhan,
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -278,7 +289,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       widget.madiadiem ?? '0',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                       ),
                       textAlign: TextAlign.center,
                     ),
@@ -289,7 +300,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nhietdo ?? '0',
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 14,
                         color: peoples[index].color ?? Colors.black,
                       ),
                       textAlign: TextAlign.center,
@@ -301,7 +312,7 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nhiptim ?? '0',
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: peoples[index].color1 ?? Colors.black),
                       textAlign: TextAlign.center,
                     ),
@@ -312,8 +323,20 @@ class _GiamSatState extends State<GiamSat> {
                     child: Text(
                       peoples[index].nongdooxy ?? '0',
                       style: TextStyle(
-                          fontSize: 16,
+                          fontSize: 14,
                           color: peoples[index].color2 ?? Colors.black),
+                      textAlign: TextAlign.center,
+                    ),
+                    flex: 1,
+                  ),
+                  verticalLine(),
+                  Expanded(
+                    child: Text(
+                      peoples[index].dungdichtruyen,
+                      style: TextStyle(
+                        fontSize: 14,
+                        color: peoples[index].color3 ?? Colors.black
+                      ),
                       textAlign: TextAlign.center,
                     ),
                     flex: 1,
@@ -336,7 +359,7 @@ class _GiamSatState extends State<GiamSat> {
     return Expanded(
       child: Text(
         data,
-        style: TextStyle(fontSize: 18, color: people.color ?? Colors.black),
+        style: TextStyle(fontSize: 14, color: people.color ?? Colors.black),
         textAlign: TextAlign.center,
       ),
       flex: flexValue,
@@ -386,6 +409,15 @@ class _GiamSatState extends State<GiamSat> {
 
             });
           }
+          if (element.dungdichtruyen == 'con') {
+            setState(() {
+            });
+          } else if (element.dungdichtruyen == 'het'){
+            element.color3 = Colors.red;
+            setState(() {
+            });
+          }
+
         });
         hideLoadingDialog();
         break;

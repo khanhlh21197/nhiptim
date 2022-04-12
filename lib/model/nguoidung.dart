@@ -9,14 +9,16 @@ class NguoiDung {
   String nhietdo;
   String nhiptim;
   String nongdooxy;
+  String dungdichtruyen;
   String mac;
   Color color;
   Color color1;
   Color color2;
+  Color color3;
   List<dynamic> id;
 
   NguoiDung( this.maphong, this.mabenhnhan, this.hoten, this.gioitinh, this.ngaysinh,
-      this.nhietdo, this.nhiptim, this.nongdooxy, this.mac);
+      this.nhietdo, this.nhiptim, this.nongdooxy, this.dungdichtruyen, this.mac);
 
   NguoiDung.fromJson(Map<String, dynamic> json)
       : maphong = json['maphong'],
@@ -27,6 +29,7 @@ class NguoiDung {
         nhietdo = json['nhietdo'],
         nhiptim = json['nhiptim'],
         nongdooxy = json['nongdooxy'],
+        dungdichtruyen = json['dungdichtruyen'],
         mac = json['mac'];
 
   Map<String, dynamic> toJson() => {
@@ -38,11 +41,12 @@ class NguoiDung {
     'nhietdo': nhietdo,
     'nhiptim': nhiptim,
     'nongdooxy': nongdooxy,
+    'dungdichtruyen': dungdichtruyen,
     'mac': mac,
   };
 
   @override
   String toString() {
-    return '$maphong -$mabenhnhan -$hoten - $gioitinh - $ngaysinh - $nhietdo -$nhiptim - $nongdooxy';
+    return '$maphong -$mabenhnhan -$hoten - $gioitinh - $ngaysinh - $nhietdo -$nhiptim - $nongdooxy - $dungdichtruyen';
   }
 }

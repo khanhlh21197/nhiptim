@@ -87,8 +87,10 @@ class _AddScreenState extends State<AddScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
         title: Text(
           'Thêm',
+          style: TextStyle(color: Colors.white),
         ),
         centerTitle: true,
         automaticallyImplyLeading: false,

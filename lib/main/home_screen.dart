@@ -5,6 +5,9 @@ import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/device_list_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
+import 'package:technonhiptim/main/trang_chu.dart';
+
+import 'custom bottom/FABBottomAppBarItem.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
 
@@ -58,7 +61,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.menu,
+              Icons.account_circle,
             ),
             label: 'Bệnh nhân',
           ),
@@ -68,16 +71,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_box_outlined,
+              Icons.search,
             ),
-            label: 'Tìm kiếm',
+            label: 'Tìm Kiếm',
           ),
         ];
         break;
     }
   }
 
-  void initWidgetOptions(int quyen) {
+ void initWidgetOptions(int quyen) {
     print('_HomeScreenState.initWidgetOptions');
     switch (quyen) {
       case 1:
@@ -104,6 +107,30 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: buildBody2(),
       bottomNavigationBar: bottomBar(),
+      // bottomNavigationBar: FABBottomAppBar(
+      //   // centerItemText: 'Trang chủ',
+      //   color: Colors.black,
+      //   backgroundColor: Colors.blueAccent,
+      //   selectedColor: Colors.white,
+      //   // notchedShape: CircularNotchedRectangle(),
+      //   onTabSelected: _onItemTapped,
+      //   items: [
+      //     FABBottomAppBarItem(iconData: Icons.meeting_room_outlined, text: 'Phòng'),
+      //     FABBottomAppBarItem(iconData: Icons.account_circle, text: 'Bệnh nhân'),
+      //     FABBottomAppBarItem(iconData: Icons.add, text: 'Thêm'),
+      //     FABBottomAppBarItem(iconData: Icons.search, text: 'Tìm kiếm'),
+      //   ],
+      // ),
+      // // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // // floatingActionButton: FloatingActionButton(
+      // //   onPressed: () {
+      // //     Navigator.push(
+      // //       context,
+      // //       MaterialPageRoute(builder: (context) => TrangChu()),
+      // //     );        },
+      // //   child: Icon(Icons.home),
+      // //   elevation: 2.0,
+      // // ),
     );
   }
 
@@ -146,6 +173,8 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
       ),
       child: BottomNavigationBar(
+        selectedFontSize:  16,
+        unselectedItemColor: Colors.black,
         showSelectedLabels: true,
         showUnselectedLabels: true,
         items: bottomBarItems,

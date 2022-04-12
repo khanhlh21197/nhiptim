@@ -1,33 +1,11 @@
-// import 'package:flutter/material.dart';
-// // import 'package:health_care/login/login_page.dart';
-// // import 'package:health_care/login/welcome_page.dart';
-// // import 'package:health_care/main/department_list_screen.dart';
-// // import 'package:health_care/main/department_page.dart';
-// // import 'package:health_care/main/home_screen.dart';
-// // import 'package:health_care/splash_screen.dart';
-// // import 'package:health_care/test_screen.dart';
-// //
-// void main() => runApp(MyHomeApp());
-// //
-// // class MyApp extends StatelessWidget {
-// //   @override
-// //   Widget build(BuildContext context) {
-// //     return MaterialApp(
-// //       debugShowCheckedModeBanner: false,
-// //       title: 'Airconditional',
-// //       home: SafeArea(
-// //         // child: SplashScreen(),
-// //         // child: HomeScreen(),
-// //         child: LoginPage(),
-// //         // child: TestScreen(),
-// //       ),
-// //     );
-// //   }
-// // }
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
 import 'package:get_mac/get_mac.dart';
+import 'package:technonhiptim/main/benh_nhan.dart';
+import 'package:technonhiptim/main/giamsat.dart';
+import 'package:technonhiptim/main/trang_chu.dart';
 import 'login/login_page.dart';
 import 'package:technonhiptim/helper/constants.dart' as Constants;
 
@@ -79,7 +57,10 @@ class _MyAppState extends State<MyApp> {
         // ),
         body: Center(
           child: LoginPage(),
-          // child: HomeScreen(),
+          // child:  GiamSat(),
+          // child: BenhNhan(),
+          //  child: HomeScreen(),
+          // child: TrangChu(),
         ),
       ),
     );
