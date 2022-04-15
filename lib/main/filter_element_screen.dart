@@ -5,20 +5,18 @@ import 'package:flutter/material.dart';
 import 'package:technonhiptim/dialogWidget/edit_device_dialog.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
-import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
-import '../navigator.dart';
 
-class DeviceListScreen extends StatefulWidget {
+class FilterElementScreen extends StatefulWidget {
   @override
-  _DeviceListScreenState createState() => _DeviceListScreenState();
+  _FilterElementScreenState createState() => _FilterElementScreenState();
 }
 
-class _DeviceListScreenState extends State<DeviceListScreen> {
+class _FilterElementScreenState extends State<FilterElementScreen> {
   static const GET_DEPARTMENT = 'getdiadiem';
   static const LOGIN_DEVICE = 'getF0';
 
@@ -53,7 +51,16 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
   }
 
   void getDevices() async {
-    ThietBi t = ThietBi('', '', '', '', '', '', '', Constants.mac,);
+    ThietBi t = ThietBi(
+      '1',
+      '2',
+      '3',
+      '4',
+      '5',
+      '6',
+      '7',
+      Constants.mac,
+    );
     pubTopic = LOGIN_DEVICE;
     publishMessage(pubTopic, jsonEncode(t));
     showLoadingDialog();
@@ -113,9 +120,11 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
           automaticallyImplyLeading: false,
-          actions: [
-          ],
-          title: Text('Danh sách bệnh nhân',style: TextStyle(color: Colors.white),),
+          actions: [],
+          title: Text(
+            'Danh sách bệnh nhân',
+            style: TextStyle(color: Colors.white),
+          ),
           centerTitle: true,
         ),
         body: isLoading
@@ -129,12 +138,10 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
     return Container(
       child: Column(
         children: [
-          SizedBox(height: 1,),
-          horizontalLine(),
-          buildTableTitle(),
-          horizontalLine(),
+          SizedBox(
+            height: 1,
+          ),
           buildListView(),
-          horizontalLine(),
         ],
       ),
     );
@@ -146,7 +153,9 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
       height: 40,
       child: Row(
         children: [
-          SizedBox(width: 1,),
+          SizedBox(
+            width: 1,
+          ),
           verticalLine(),
           buildTextLabel('STT', 1),
           verticalLine(),
@@ -156,7 +165,9 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
           verticalLine(),
           buildTextLabel('Giới tính', 2),
           verticalLine(),
-          SizedBox(width: 1,),
+          SizedBox(
+            width: 1,
+          ),
         ],
       ),
     );
@@ -205,7 +216,9 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
               height: 40,
               child: Row(
                 children: [
-                  SizedBox(width: 1,),
+                  SizedBox(
+                    width: 1,
+                  ),
                   verticalLine(),
                   buildTextData('${index + 1}', 1),
                   verticalLine(),
@@ -215,7 +228,9 @@ class _DeviceListScreenState extends State<DeviceListScreen> {
                   verticalLine(),
                   buildTextData(tbs[index].gioitinh, 2),
                   verticalLine(),
-                  SizedBox(width: 1,),
+                  SizedBox(
+                    width: 1,
+                  ),
                 ],
               ),
             ),

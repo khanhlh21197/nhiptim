@@ -1,19 +1,16 @@
 import 'dart:collection';
-import 'dart:convert';
 
 import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:flutter/material.dart';
+import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
+import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:technonhiptim/helper/config.dart';
-import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/login/login_page.dart';
+import 'package:technonhiptim/main/device_detail_screen.dart';
 import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
-import 'package:technonhiptim/response/device_response.dart';
-import 'package:sleek_circular_slider/sleek_circular_slider.dart';
-
-import '../helper/constants.dart' as Constants;
 
 class DetailScreen extends StatefulWidget {
   final String matram;
@@ -45,9 +42,21 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
-    // isLoading = false;
-    // tbs.add(ThietBi('TECHNO1', 'h1.32', 'Online', '50', 'thoigian', 'mac', 'Tu1'));
-    // tbs.add(ThietBi('TECHNO2', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2'));
+    isLoading = false;
+    tbs.add(ThietBi(
+        'Máy lọc số 1', 'h1.32', 'Online', '50', 'thoigian', 'mac', 'Tu1', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 2', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 3', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 4', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 5', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 6', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi(
+        'Máy lọc số 7', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
 
     getSharedPrefs();
     // initMqtt();
@@ -113,10 +122,11 @@ class _DetailScreenState extends State<DetailScreen> {
         children: [
           Expanded(
             child: GridView.builder(
+              padding: const EdgeInsets.all(15),
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
+                crossAxisCount: 2,
                 childAspectRatio: 0.85,
-                crossAxisSpacing: 2,
+                crossAxisSpacing: 10,
                 mainAxisSpacing: 2,
               ),
               shrinkWrap: true,
@@ -162,44 +172,64 @@ class _DetailScreenState extends State<DetailScreen> {
     return GestureDetector(
       onTap: () {
         _selectedDevice = tb.maphong;
-        // navigatorPush(context, RollingDoor());
-        // getProducts();
+        navigatorPush(context, DeviceDetailScreen());
       },
       behavior: HitTestBehavior.translucent,
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
         margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(5),
-          border: Border.all(color: Colors.grey),
+        child: PhysicalModel(
           color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            // Text(
-            //   tb.tu ?? "",
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.black,
-            //   ),
-            // ),
-            Text(
-              tb.mabenhnhan ?? "",
-              style: TextStyle(
-                // fontWeight: FontWeight.bold,
-                color: tb.color ?? Colors.black,
+          elevation: 5,
+          shadowColor: Colors.blue,
+          borderRadius: BorderRadius.circular(20),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              Text(
+                tb.mabenhnhan ?? "",
+                style: TextStyle(
+                  // fontWeight: FontWeight.bold,
+                  color: tb.color ?? Colors.black,
+                ),
               ),
-            ),
-            // sleek(tb.nhietdo ?? "0"),
-            // Text(
-            //   tb.trangthai ?? 'offline',
-            //   style: TextStyle(
-            //     fontWeight: FontWeight.bold,
-            //     color: Colors.black,
-            //   ),
-            // ),
-          ],
+              Container(
+                width: 100,
+                height: 100,
+                child: LiquidCircularProgressIndicator(
+                  value: 0.5,
+                  // Defaults to 0.5.
+                  valueColor: AlwaysStoppedAnimation(Colors.lightBlue),
+                  // Defaults to the current Theme's accentColor.
+                  backgroundColor: Colors.white,
+                  // Defaults to the current Theme's backgroundColor.
+                  borderColor: Colors.blue,
+                  borderWidth: 3.0,
+                  direction: Axis.vertical,
+                  // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
+                  center: centerProgress(),
+                ),
+              ),
+              // Image.asset(
+              //   'images/water_filter.png',
+              //   width: 60,
+              //   height: 60,
+              //   fit: BoxFit.cover,
+              // ),
+            ],
+          ),
         ),
+      ),
+    );
+  }
+
+  Widget centerProgress() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('1', style: TextStyle(fontSize: 10)),
+        ],
       ),
     );
   }
@@ -448,4 +478,3 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 }
-

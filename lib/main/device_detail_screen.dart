@@ -7,18 +7,19 @@ import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/login/login_page.dart';
+import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/navigator.dart';
 import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
 
-class DepartmentListScreen extends StatefulWidget {
+class DeviceDetailScreen extends StatefulWidget {
   @override
-  _DepartmentListScreenState createState() => _DepartmentListScreenState();
+  _DeviceDetailScreenState createState() => _DeviceDetailScreenState();
 }
 
-class _DepartmentListScreenState extends State<DepartmentListScreen> {
+class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   static const LOGIN_KHOA = 'getdiadiem';
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
@@ -31,12 +32,9 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   @override
   void initState() {
-    departments.add(Department('Loi so 101', 'p101', 'mac'));
-    departments.add(Department('Loi so 102', 'p102', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
+    departments.add(Department('phong 101', 'p101', 'mac'));
+    departments.add(Department('phong 102', 'p102', 'mac'));
+    departments.add(Department('phong 103', 'p103', 'mac'));
     isLoading = false;
     initMqtt();
 
@@ -92,13 +90,13 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onWillPop,
+      onWillPop: null,
       child: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.blueAccent,
           automaticallyImplyLeading: false,
           title: Text(
-            'Danh sách phòng',
+            'Máy lọc nước của User',
             style: TextStyle(
               color: Colors.white,
             ),
@@ -124,10 +122,94 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   Widget buildBody() {
     return Container(
-      color: Colors.white,
+      width: double.infinity,
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          buildListView(),
+          liquidProgress(),
+          deviceInfo(),
+          Image.asset(
+            'images/water_filter.png',
+            width: 300,
+            height: 150,
+            fit: BoxFit.cover,
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget liquidProgress() {
+    return Container(
+      width: 250,
+      height: 250,
+      child: LiquidCircularProgressIndicator(
+        value: 0.25,
+        // Defaults to 0.5.
+        valueColor: AlwaysStoppedAnimation(Colors.lightBlue),
+        // Defaults to the current Theme's accentColor.
+        backgroundColor: Colors.white,
+        // Defaults to the current Theme's backgroundColor.
+        borderColor: Colors.blue,
+        borderWidth: 5.0,
+        direction: Axis.vertical,
+        // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
+        center: centerProgress(),
+      ),
+    );
+  }
+
+  Widget deviceInfo() {
+    return Container(
+      padding: const EdgeInsets.all(32),
+      child: PhysicalModel(
+        color: Colors.white,
+        elevation: 5,
+        shadowColor: Colors.blue,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            children: [
+              deviceInfoItem(
+                  'Tình trạng máy: ', 'Hoạt động ổn định', Colors.green),
+              deviceInfoItem(
+                  'Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
+              deviceInfoItem(
+                  'Số lõi: ', '8 lõi', Colors.black),
+              deviceInfoItem(
+                  'Thời gian bảo hành: ', 'Chưa kích hoạt', Colors.red),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget deviceInfoItem(String label, String content, Color color) {
+    return Container(
+      margin: const EdgeInsets.all(8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(label, textAlign: TextAlign.left),
+          Text(content,
+              textAlign: TextAlign.right,
+              style: TextStyle(color: color, fontWeight: FontWeight.bold))
+        ],
+      ),
+    );
+  }
+
+  Widget centerProgress() {
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          Text('Chỉ số tinh khiết', style: TextStyle(fontSize: 15)),
+          Text('12', style: TextStyle(fontSize: 25)),
+          Text('Tốt cho sức khỏe', style: TextStyle(fontSize: 15)),
         ],
       ),
     );
@@ -172,114 +254,43 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
           shrinkWrap: true,
           itemCount: departments.length,
           itemBuilder: (context, index) {
-            return itemView(departments[index]);
+            return itemView(index);
           },
         ),
       ),
     );
   }
 
-  Widget itemView(Department department) {
+  Widget itemView(int index) {
     return InkWell(
       onTap: () async {
-        // navigatorPush(
-        //     context,
-        //     GiamSat(
-        //       madiadiem: departments[index].maphong,
-        //     ));
+        navigatorPush(
+            context,
+            GiamSat(
+              madiadiem: departments[index].maphong,
+            ));
       },
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 1),
-        margin: const EdgeInsets.all(8),
-        child: PhysicalModel(
-          color: Colors.white,
-          elevation: 3,
-          shadowColor: Colors.white,
-          borderRadius: BorderRadius.circular(5),
-          child: Row(
-            children: [
-              elementIcon(department),
-              elementInfo(department),
-              reloadButton(department),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget elementIcon(Department department) {
-    return Container(
-      margin: const EdgeInsets.all(8),
-      width: 15,
-      height: 30,
-      child: LiquidLinearProgressIndicator(
-        value: 0.6,
-        // Defaults to 0.5.
-        valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-        // Defaults to the current Theme's accentColor.
-        backgroundColor: Colors.white,
-        // Defaults to the current Theme's backgroundColor.
-        borderColor: Colors.blueAccent,
-        borderWidth: 3.0,
-        borderRadius: 12.0,
-        direction: Axis.vertical,
-        // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
-      ),
-    );
-  }
-
-  Widget elementInfo(Department department) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            department.tenphong,
-            style: TextStyle(fontWeight: FontWeight.bold),
-          ),
-          SizedBox(
-            height: 5,
-          ),
-          Text('Thời gian còn lại của lõi: 1200/1200 giờ'),
-          SizedBox(
-            height: 5,
-          ),
-          Container(
-            color: Colors.yellow,
-            height: 10,
-            width: 300,
-            child: LiquidLinearProgressIndicator(
-              value: 0.6,
-              // Defaults to 0.5.
-              valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
-              // Defaults to the current Theme's accentColor.
-              backgroundColor: Colors.white,
-              // Defaults to the current Theme's backgroundColor.
-              borderColor: Colors.blueAccent,
-              borderWidth: 3.0,
-              borderRadius: 12.0,
-              direction: Axis.horizontal,
-              // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
+        child: Column(
+          children: [
+            Container(
+              height: 40,
+              child: Row(
+                children: [
+                  buildTextData('${index + 1}', 1),
+                  verticalLine(),
+                  buildTextData(departments[index].maphong ?? '', 3),
+                  verticalLine(),
+                  buildTextData(departments[index].tenphong ?? '', 3),
+                  verticalLine(),
+                  buildEditBtn(index, 1),
+                ],
+              ),
             ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget reloadButton(Department department) {
-    return Container(
-      child: IconButton(
-        icon: Image.asset(
-          'images/refresh.png',
-          width: 25,
-          height: 25,
-          color: Colors.yellow,
+            horizontalLine(),
+          ],
         ),
-        onPressed: null,
       ),
     );
   }

@@ -3,11 +3,10 @@ import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/helper/bottom_navigation_bar.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
-import 'package:technonhiptim/main/device_list_screen.dart';
+import 'package:technonhiptim/main/detail_screen.dart';
+import 'package:technonhiptim/main/filter_element_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
-import 'package:technonhiptim/main/trang_chu.dart';
 
-import 'custom bottom/FABBottomAppBarItem.dart';
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
 
@@ -57,13 +56,19 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               Icons.meeting_room_outlined,
             ),
-            label: 'Phòng',
+            label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
             icon: Icon(
               Icons.account_circle,
             ),
-            label: 'Bệnh nhân',
+            label: 'Lõi lọc',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(
+              Icons.account_circle,
+            ),
+            label: 'Thiết bị',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -73,20 +78,21 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: Icon(
               Icons.search,
             ),
-            label: 'Tìm Kiếm',
+            label: 'Bảo hành',
           ),
         ];
         break;
     }
   }
 
- void initWidgetOptions(int quyen) {
+  void initWidgetOptions(int quyen) {
     print('_HomeScreenState.initWidgetOptions');
     switch (quyen) {
       case 1:
         _widgetOptions = <Widget>[
+          DetailScreen(),
           DepartmentListScreen(),
-          DeviceListScreen(),
+          FilterElementScreen(),
           AddScreen(),
           TraCuuScreen(),
         ];
@@ -99,7 +105,6 @@ class _HomeScreenState extends State<HomeScreen> {
       _selectedIndex = index;
     });
     _pageController.jumpToPage(index);
-
   }
 
   @override
@@ -147,8 +152,9 @@ class _HomeScreenState extends State<HomeScreen> {
     return PageView(
       controller: _pageController,
       children: [
+        DetailScreen(),
         DepartmentListScreen(),
-        DeviceListScreen(),
+        FilterElementScreen(),
         AddScreen(),
         TraCuuScreen(),
       ],
@@ -173,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
       ),
       child: BottomNavigationBar(
-        selectedFontSize:  16,
+        selectedFontSize: 16,
         unselectedItemColor: Colors.black,
         showSelectedLabels: true,
         showUnselectedLabels: true,
@@ -184,5 +190,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
-
 }

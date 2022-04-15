@@ -5,7 +5,7 @@ import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
 
-import 'device_list_screen.dart';
+import 'filter_element_screen.dart';
 
 class TrangChu extends StatefulWidget {
   TrangChu({Key key, this.title}) : super(key: key);
@@ -68,7 +68,7 @@ class _TrangChuState extends State<TrangChu> {
       case 1:
         _widgetOptions = <Widget>[
           DepartmentListScreen(),
-          DeviceListScreen(),
+          FilterElementScreen(),
           AddScreen(),
           TraCuuScreen(),
         ];
