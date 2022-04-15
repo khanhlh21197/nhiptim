@@ -29,6 +29,7 @@ class EditDeviceDialog extends StatefulWidget {
 class _EditDeviceDialogState extends State<EditDeviceDialog> {
   static const UPDATE_DEVICE = 'updateF0';
   static const DELETE_DEVICE = 'deleteF0';
+  ThietBi updatedDevice;
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   final scrollController = ScrollController();
