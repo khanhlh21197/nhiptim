@@ -2,20 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:technonhiptim/Widget/bezierContainer.dart';
 import 'package:technonhiptim/helper/constants.dart';
 import 'package:technonhiptim/helper/loader.dart';
-import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/main/benh_nhan.dart';
-import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/main/home_screen.dart';
 import 'package:technonhiptim/model/user.dart';
 import 'package:technonhiptim/navigator.dart';
 import 'package:technonhiptim/response/device_response.dart';
 import 'package:technonhiptim/singup/signup.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
 
 import '../helper/constants.dart' as Constants;
 import '../helper/mqttClientWrapper.dart';
@@ -91,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
     // await sharedPrefsHelper.addBoolToSF('switchValue', true);
     _emailController.text = await sharedPrefsHelper.getStringValuesSF('email');
     _passwordController.text =
-    await sharedPrefsHelper.getStringValuesSF('password');
+        await sharedPrefsHelper.getStringValuesSF('password');
     _switchValue = await sharedPrefsHelper.getBoolValuesSF('switchValue');
     print('_LoginPageState.getSharedPrefs $_switchValue');
     print('_LoginPageState.getSharedPrefs ${_emailController.text}');
@@ -109,7 +106,7 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  Future<void>  _tryLogin() async {
+  Future<void> _tryLogin() async {
     setState(() {
       loading = true;
     });
@@ -181,12 +178,14 @@ class _LoginPageState extends State<LoginPage> {
       //   ),
       // );
       if (_emailController.text == 'admin' && switchValue == false) {
-        navigatorPushAndRemoveUntil(context,HomeScreen(
-          loginResponse: responseMap,
-        ) );
+        navigatorPushAndRemoveUntil(
+            context,
+            HomeScreen(
+              loginResponse: responseMap,
+            ));
       }
-      if (_emailController.text != 'admin' && switchValue == true){
-        navigatorPushAndRemoveUntil(context,BenhNhan());
+      if (_emailController.text != 'admin' && switchValue == true) {
+        navigatorPushAndRemoveUntil(context, BenhNhan());
       }
       // if (switchValue) {
       //   navigatorPushAndRemoveUntil(context,BenhNhan());
@@ -377,39 +376,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   Widget _title() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Icon(
-          Icons.add_circle_outline,
-          size: 40,
-          color: Colors.red,
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-              text: 'H',
-              style: GoogleFonts.portLligatSans(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: Colors.blueAccent,
-              ),
-              children: const [
-                TextSpan(
-                  text: 'ealth',
-                  style: TextStyle(color: Colors.black, fontSize: 30),
-                ),
-                TextSpan(
-                  text: 'Care',
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
-                ),
-              ]),
-        ),
-      ],
+    return Container(
+      child: Image.asset('images/cres_logo.png'),
     );
   }
-
 
   Widget _header() {
     return Padding(
@@ -483,6 +453,7 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
   Widget switchContainer() {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8),
@@ -509,6 +480,4 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
-
 }
-

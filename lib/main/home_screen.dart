@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/helper/bottom_navigation_bar.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
+import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/detail_screen.dart';
 import 'package:technonhiptim/main/filter_element_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
+import 'package:technonhiptim/singup/signup.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
@@ -154,9 +156,9 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         DetailScreen(),
         DepartmentListScreen(),
-        FilterElementScreen(),
+        LoginPage(),
         AddScreen(),
-        TraCuuScreen(),
+        SignUpPage(),
       ],
       onPageChanged: (page) {
         setState(() {

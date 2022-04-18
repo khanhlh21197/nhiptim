@@ -196,13 +196,17 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
           elevation: 3,
           shadowColor: Colors.white,
           borderRadius: BorderRadius.circular(5),
-          child: Row(
-            children: [
-              elementIcon(department),
-              elementInfo(department),
-              reloadButton(department),
-            ],
-          ),
+          child: Row(children: [
+            Expanded(
+              child: Row(
+                children: [
+                  elementIcon(department),
+                  elementInfo(department),
+                  reloadButton(department),
+                ],
+              ),
+            ),
+          ]),
         ),
       ),
     );
