@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:get_mac/get_mac.dart';
 import 'package:technonhiptim/helper/constants.dart' as Constants;
 
-import 'main/home_screen.dart';
+import 'login/login_page.dart';
 
 void main() => runApp(MyApp());
 
@@ -53,10 +53,10 @@ class _MyAppState extends State<MyApp> {
         //    title:Text(Constants.mac, style: TextStyle(color: Colors.black),),
         // ),
         body: Center(
-          // child: LoginPage(),
+          child: LoginPage(),
           // child:  GiamSat(),
           // child: BenhNhan(),
-          child: HomeScreen(),
+          // child: HomeScreen(),
           // child: TrangChu(),
         ),
       ),

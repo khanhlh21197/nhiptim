@@ -7,7 +7,7 @@ import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/detail_screen.dart';
 import 'package:technonhiptim/main/filter_element_screen.dart';
 import 'package:technonhiptim/main/tra_cuu_screen.dart';
-import 'package:technonhiptim/singup/signup.dart';
+import 'package:technonhiptim/main/user_profile_page.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
@@ -78,7 +78,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.search,
+              Icons.account_circle,
             ),
             label: 'Bảo hành',
           ),
@@ -158,7 +158,7 @@ class _HomeScreenState extends State<HomeScreen> {
         DepartmentListScreen(),
         LoginPage(),
         AddScreen(),
-        SignUpPage(),
+        UserProfilePage(),
       ],
       onPageChanged: (page) {
         setState(() {

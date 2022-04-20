@@ -152,7 +152,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
         backgroundColor: Colors.white,
         // Defaults to the current Theme's backgroundColor.
         borderColor: Colors.blue,
-        borderWidth: 5.0,
+        borderWidth: 3.0,
         direction: Axis.vertical,
         // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
         center: centerProgress(),
@@ -174,10 +174,8 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             children: [
               deviceInfoItem(
                   'Tình trạng máy: ', 'Hoạt động ổn định', Colors.green),
-              deviceInfoItem(
-                  'Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
-              deviceInfoItem(
-                  'Số lõi: ', '8 lõi', Colors.black),
+              deviceInfoItem('Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
+              deviceInfoItem('Số lõi: ', '8 lõi', Colors.black),
               deviceInfoItem(
                   'Thời gian bảo hành: ', 'Chưa kích hoạt', Colors.red),
             ],
@@ -204,12 +202,17 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
 
   Widget centerProgress() {
     return Container(
+      padding: const EdgeInsets.all(32),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('Chỉ số tinh khiết', style: TextStyle(fontSize: 15)),
-          Text('12', style: TextStyle(fontSize: 25)),
-          Text('Tốt cho sức khỏe', style: TextStyle(fontSize: 15)),
+          Text('Chỉ số tinh khiết', style: TextStyle(fontSize: 20)),
+          Text('12',
+              style: TextStyle(
+                  fontSize: 45,
+                  color: Colors.blue,
+                  fontWeight: FontWeight.bold)),
+          Text('Tốt cho sức khỏe', style: TextStyle(fontSize: 20)),
         ],
       ),
     );

@@ -31,12 +31,12 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   @override
   void initState() {
-    departments.add(Department('Loi so 101', 'p101', 'mac'));
-    departments.add(Department('Loi so 102', 'p102', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
-    departments.add(Department('Loi so 103', 'p103', 'mac'));
+    departments.add(Department('Lõi số 1', 'p101', 'mac'));
+    departments.add(Department('Lõi số 2', 'p102', 'mac'));
+    departments.add(Department('Lõi số 3', 'p103', 'mac'));
+    departments.add(Department('Lõi số 4', 'p103', 'mac'));
+    departments.add(Department('Lõi số 5', 'p103', 'mac'));
+    departments.add(Department('Lõi số 6', 'p103', 'mac'));
     isLoading = false;
     initMqtt();
 
@@ -193,7 +193,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         margin: const EdgeInsets.all(8),
         child: PhysicalModel(
           color: Colors.white,
-          elevation: 3,
+          elevation: 5,
           shadowColor: Colors.white,
           borderRadius: BorderRadius.circular(5),
           child: Row(children: [

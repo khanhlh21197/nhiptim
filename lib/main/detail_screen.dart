@@ -43,20 +43,20 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     isLoading = false;
-    tbs.add(ThietBi(
-        'Máy lọc số 1', 'h1.32', 'Online', '50', 'thoigian', 'mac', 'Tu1', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 2', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 3', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 4', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 5', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 6', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
-    tbs.add(ThietBi(
-        'Máy lọc số 7', 'h1.32', 'Online', '60', 'thoigian', 'mac', 'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 1', 'h1.32', 'Online', '50', 'thoigian', 'mac',
+        'Tu1', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 2', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 3', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 4', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 5', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 6', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
+    tbs.add(ThietBi('Máy lọc số 7', 'h1.32', 'Online', '60', 'thoigian', 'mac',
+        'Tu2', 'mac'));
 
     getSharedPrefs();
     // initMqtt();
@@ -204,7 +204,7 @@ class _DetailScreenState extends State<DetailScreen> {
                   backgroundColor: Colors.white,
                   // Defaults to the current Theme's backgroundColor.
                   borderColor: Colors.blue,
-                  borderWidth: 3.0,
+                  borderWidth: 1.0,
                   direction: Axis.vertical,
                   // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
                   center: centerProgress(),
@@ -225,10 +225,17 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget centerProgress() {
     return Container(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          Text('1', style: TextStyle(fontSize: 10)),
+          ImageIcon(
+            AssetImage(
+              'images/water_drop.png',
+            ),
+            size: 30,
+            color: Colors.blue,
+          ),
+          Text('1', style: TextStyle(fontSize: 12)),
         ],
       ),
     );

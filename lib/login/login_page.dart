@@ -377,7 +377,11 @@ class _LoginPageState extends State<LoginPage> {
 
   Widget _title() {
     return Container(
-      child: Image.asset('images/cres_logo.png'),
+      child: Image.asset(
+        'images/cres_logo.jpg',
+        width: 75,
+        height: 75,
+      ),
     );
   }
 
