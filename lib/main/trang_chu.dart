@@ -1,9 +1,8 @@
+import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:circular_bottom_navigation/tab_item.dart';
 import 'package:flutter/material.dart';
-import 'package:circular_bottom_navigation/circular_bottom_navigation.dart';
 import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
-import 'package:technonhiptim/main/tra_cuu_screen.dart';
 
 import 'filter_element_screen.dart';
 
@@ -22,16 +21,23 @@ class _TrangChuState extends State<TrangChu> {
 
   static List<Widget> _widgetOptions = List();
 
-
-   PageController _pageController;
+  PageController _pageController;
 
   List<TabItem> tabItems = List.of([
     new TabItem(Icons.meeting_room_outlined, "Phòng", Colors.blueAccent,
-        labelStyle: TextStyle(fontWeight: FontWeight.bold, color: Colors.black,)),
+        labelStyle: TextStyle(
+          fontWeight: FontWeight.bold,
+          color: Colors.black,
+        )),
     new TabItem(Icons.account_circle, "Bệnh nhân", Colors.blueAccent,
-        labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-    new TabItem(Icons.add, "Thêm", Colors.blueAccent, labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-    new TabItem(Icons.search, "Tìm kiếm", Colors.blueAccent,labelStyle: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        labelStyle:
+            TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+    new TabItem(Icons.add, "Thêm", Colors.blueAccent,
+        labelStyle:
+            TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+    new TabItem(Icons.search, "Tìm kiếm", Colors.blueAccent,
+        labelStyle:
+            TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
   ]);
 
   CircularBottomNavigationController _navigationController;
@@ -40,7 +46,8 @@ class _TrangChuState extends State<TrangChu> {
   void initState() {
     initWidgetOptions(1);
     super.initState();
-    _navigationController = new CircularBottomNavigationController(_selectedPos);
+    _navigationController =
+        new CircularBottomNavigationController(_selectedPos);
     _pageController = new PageController();
   }
 
@@ -70,15 +77,12 @@ class _TrangChuState extends State<TrangChu> {
           DepartmentListScreen(),
           FilterElementScreen(),
           AddScreen(),
-          TraCuuScreen(),
         ];
         break;
     }
   }
 
-
   Widget bodyContainer() {
-
     return Container(
       child: Center(
         child: _widgetOptions.elementAt(_selectedPos),

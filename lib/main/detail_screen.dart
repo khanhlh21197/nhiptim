@@ -1,16 +1,21 @@
 import 'dart:collection';
+import 'dart:convert';
 
 import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
 import 'package:technonhiptim/helper/config.dart';
+import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/main/device_detail_screen.dart';
 import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
+import 'package:technonhiptim/response/device_response.dart';
+
+import '../helper/constants.dart' as Constants;
 
 class DetailScreen extends StatefulWidget {
   final String matram;
@@ -34,6 +39,7 @@ class _DetailScreenState extends State<DetailScreen> {
   String pubTopic;
   bool isLoading = true;
   String trangthai;
+  String iduser = "";
 
   var dropDownProducts = [''];
   String _selectedProduct;
@@ -43,45 +49,55 @@ class _DetailScreenState extends State<DetailScreen> {
   @override
   void initState() {
     isLoading = false;
-    tbs.add(ThietBi('Máy lọc số 1', 'h1.32', 'Online', '50', 'thoigian', 'mac',
-        'Tu1', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 2', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 3', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 4', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 5', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 6', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
-    tbs.add(ThietBi('Máy lọc số 7', 'h1.32', 'Online', '60', 'thoigian', 'mac',
-        'Tu2', 'mac'));
 
     getSharedPrefs();
-    // initMqtt();
+    initMqtt();
     super.initState();
   }
 
-  // void getDevices() async {
-  //   ThietBi t = ThietBi('', widget.matram, '', '', '', Constants.mac, '');
-  //   pubTopic = Constants.GET_DEVICE;
-  //   publishMessage(pubTopic, jsonEncode(t));
-  //   showLoadingDialog();
-  // }
+  void getDevices() async {
+    ThietBi t = ThietBi(
+      iduser,
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      '',
+      Constants.mac,
+    );
+    pubTopic = Constants.GET_DEVICE;
+    publishMessage(pubTopic, jsonEncode(t));
+    showLoadingDialog();
+  }
 
-  // Future<void> publishMessage(String topic, String message) async {
-  //   if (mqttClientWrapper.connectionState ==
-  //       MqttCurrentConnectionState.CONNECTED) {
-  //     mqttClientWrapper.publishMessage(topic, message);
-  //   } else {
-  //     await initMqtt();
-  //     mqttClientWrapper.publishMessage(topic, message);
-  //   }
-  // }
+  Future<void> publishMessage(String topic, String message) async {
+    if (mqttClientWrapper.connectionState ==
+        MqttCurrentConnectionState.CONNECTED) {
+      mqttClientWrapper.publishMessage(topic, message);
+    } else {
+      await initMqtt();
+      mqttClientWrapper.publishMessage(topic, message);
+    }
+  }
 
   void getSharedPrefs() async {
     email = await sharedPrefs.getStringValuesSF('email');
+    iduser = await sharedPrefs.getStringValuesSF('iduser');
   }
 
   // Future<void> matchImages() async {
@@ -95,8 +111,8 @@ class _DetailScreenState extends State<DetailScreen> {
     // matchImages();
     return Scaffold(
       appBar: AppBar(
-        title: Text('Giám sát'),
         centerTitle: true,
+        title: Text('Trang chủ'),
         actions: [
           IconButton(
               icon: Icon(Icons.logout),
@@ -141,38 +157,15 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  Widget buildBody2() {
-    return Container(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
-      width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Expanded(
-            child: GridView.builder(
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 3,
-                childAspectRatio: 0.85,
-                crossAxisSpacing: 2,
-                mainAxisSpacing: 2,
-              ),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return buildItem2(listtu2[index]);
-              },
-              itemCount: listtu2.length,
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
   Widget buildItem(ThietBi tb) {
     return GestureDetector(
       onTap: () {
-        _selectedDevice = tb.maphong;
-        navigatorPush(context, DeviceDetailScreen());
+        _selectedDevice = tb.mathietbi;
+        navigatorPush(
+            context,
+            DeviceDetailScreen(
+              thietBi: tb,
+            ));
       },
       behavior: HitTestBehavior.translucent,
       child: Container(
@@ -187,11 +180,7 @@ class _DetailScreenState extends State<DetailScreen> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Text(
-                tb.mabenhnhan ?? "",
-                style: TextStyle(
-                  // fontWeight: FontWeight.bold,
-                  color: tb.color ?? Colors.black,
-                ),
+                tb.mathietbi ?? "",
               ),
               Container(
                 width: 100,
@@ -344,82 +333,62 @@ class _DetailScreenState extends State<DetailScreen> {
     );
   }
 
-  // Future<void> initMqtt() async {
-  //   mqttClientWrapper =
-  //       MQTTClientWrapper(() => print('Success'), (message) => handle(message));
-  //   await mqttClientWrapper.prepareMqttClient(Constants.mac);
-  //
-  //   getDevices();
-  //
-  //   // tbs.forEach((element) {
-  //   //   mqttClientWrapper.subscribe(element.matb, (_message){
-  //   //     print('_DetailScreenState.initMqtt $_message');
-  //   //   });
-  //   // });
-  //
-  //   mqttClientWrapper.subscribe(widget.matram, (_message) {
-  //     print('_DetailScreenState.initMqtt $_message');
-  //     var result = _message.replaceAll("\"", "").split('&');
-  //     tbs.forEach((element) {
-  //       String str = result[2];
-  //       if (element.matb == result[0])
-  //       if (str == '0') {
-  //         element.trangthai = 'offline';
-  //       } else if (str == '1') {
-  //         element.trangthai = 'online';
-  //       }
-  //     });
-  //
-  //     tbs.forEach((element) {
-  //       print('_DetailScreenState.initMqtt ${element.matb}');
-  //       print('_DetailScreenState.initMqtt ${result[0]}');
-  //       if (element.matb == result[0]) {
-  //         element.nhietdo = result[1];
-  //         // element.trangthai = result[2];
-  //         if (double.tryParse(element.nhietdo) >
-  //             double.tryParse(element.nguongcb)) {
-  //           element.color = Colors.red;
-  //         } else {
-  //           element.color = Colors.black;
-  //         }
-  //         // changeItemColor(element);
-  //         setState(() {});
-  //       } else {
-  //         print('_DetailScreenState.initMqtt false');
-  //       }
-  //     });
-  //   });
-  // }
+  Future<void> initMqtt() async {
+    mqttClientWrapper =
+        MQTTClientWrapper(() => print('Success'), (message) => handle(message));
+    await mqttClientWrapper.prepareMqttClient(Constants.mac);
+
+    getDevices();
+
+    // tbs.forEach((element) {
+    //   mqttClientWrapper.subscribe(element.matb, (_message){
+    //     print('_DetailScreenState.initMqtt $_message');
+    //   });
+    // });
+
+    mqttClientWrapper.subscribe(widget.matram, (_message) {
+      print('_DetailScreenState.initMqtt $_message');
+      var result = _message.replaceAll("\"", "").split('&');
+      tbs.forEach((element) {
+        String str = result[2];
+      });
+
+      tbs.forEach((element) {
+        print('_DetailScreenState.initMqtt ${element.mathietbi}');
+        print('_DetailScreenState.initMqtt ${result[0]}');
+        setState(() {});
+      });
+    });
+  }
 
   void changeItemColor(ThietBi element) {
     Future.delayed(Duration(milliseconds: 500), () {
-      element.color = Colors.white;
       setState(() {});
     });
   }
 
-  // void handle(String message) {
-  //   try {
-  //     Map responseMap = jsonDecode(message);
-  //     var response = DeviceResponse.fromJson(responseMap);
-  //
-  //     switch (pubTopic) {
-  //       case Constants.GET_DEVICE:
-  //         tbs = response.id.map((e) => ThietBi.fromJson(e)).toList();
-  //         tbs.forEach((element) {
-  //           listtu.add(element.tu);
-  //         });
-  //         listtu2 = listtu.toList();
-  //         print('_DetailScreenState.handle listtu: $listtu2');
-  //         setState(() {});
-  //         hideLoadingDialog();
-  //         break;
-  //     }
-  //     pubTopic = '';
-  //   } catch (e) {
-  //     print('_DetailScreenState.handle $e');
-  //   }
-  // }
+  void handle(String message) {
+    try {
+      Map responseMap = jsonDecode(message);
+      var response = DeviceResponse.fromJson(responseMap);
+
+      switch (pubTopic) {
+        case Constants.GET_DEVICE:
+          tbs = response.id.map((e) => ThietBi.fromJson(e)).toList();
+          tbs.forEach((element) {
+            // listtu.add(element.tu);
+          });
+          listtu2 = listtu.toList();
+          print('_DetailScreenState.handle listtu: $listtu2');
+          setState(() {});
+          hideLoadingDialog();
+          break;
+      }
+      pubTopic = '';
+    } catch (e) {
+      print('_DetailScreenState.handle $e');
+    }
+  }
 
   Widget clayContainer(String nhietdo) {
     double nd = double.tryParse(nhietdo);

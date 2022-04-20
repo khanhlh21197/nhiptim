@@ -1,12 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:qrscan/qrscan.dart' as scanner;
 import 'package:technonhiptim/helper/loader.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/model/thietbi.dart';
-import 'package:qrscan/qrscan.dart' as scanner;
 
 import '../helper/constants.dart' as Constants;
 
@@ -26,23 +26,21 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   SharedPrefsHelper sharedPrefsHelper;
 
   final scrollController = ScrollController();
-  final nameController = TextEditingController();
-  final gioitinhController = TextEditingController();
-  final giosangController = TextEditingController();
-  final giochieuController = TextEditingController();
-  final diachiController = TextEditingController();
-  final sodienthoaiController = TextEditingController();
+  final vitriController = TextEditingController();
   final idController = TextEditingController();
-  final ngaysinhController = TextEditingController();
-
-  String currentSelectedValue;
+  String iduser = "";
 
   @override
   void initState() {
     initMqtt();
+    getSharedPref();
     super.initState();
   }
 
+  Future<void> getSharedPref() async {
+    sharedPrefsHelper = SharedPrefsHelper();
+    iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,54 +74,17 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 idDeviceContainer(
-                  'Mã bệnh nhân *',
+                  'Mã thiết bị',
                   Icon(Icons.vpn_key),
                   TextInputType.text,
                   idController,
                 ),
                 buildTextField(
-                  'Họ và tên',
+                  'Vị trí',
                   Icon(Icons.email),
                   TextInputType.text,
-                  nameController,
+                  vitriController,
                 ),
-                buildTextField(
-                  'Giới tính',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  gioitinhController,
-                ),
-                buildTextField(
-                  'Ngày sinh',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  ngaysinhController,
-                ),
-                buildTextField(
-                  'Số điện thoại',
-                  Icon(Icons.email),
-                  TextInputType.number,
-                  sodienthoaiController,
-                ),
-                buildTextField(
-                  'Địa chỉ',
-                  Icon(Icons.email),
-                  TextInputType.text,
-                  diachiController,
-                ),
-                // buildTextField(
-                //   'Giờ sáng',
-                //   Icon(Icons.email),
-                //   TextInputType.text,
-                //   giosangController,
-                // ),
-                // buildTextField(
-                //   'Giờ chiều',
-                //   Icon(Icons.email),
-                //   TextInputType.text,
-                //   giochieuController,
-                // ),
-                buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
             ),
@@ -235,77 +196,35 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   }
 
   void tryAdd() {
-    if (idController.text.isEmpty || currentSelectedValue.isEmpty) {
+    if (idController.text.isEmpty) {
       Dialogs.showAlertDialog(context, 'Vui lòng nhập đủ thông tin!');
       return;
     }
     ThietBi tb = ThietBi(
+      iduser,
       idController.text,
-      currentSelectedValue,
-      nameController.text,
-      gioitinhController.text,
-      ngaysinhController.text,
-      sodienthoaiController.text,
-      diachiController.text,
+      vitriController.text,
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       Constants.mac,
     );
-    publishMessage('registerF0', jsonEncode(tb));
-  }
-
-  Widget buildDepartment(String label) {
-    return Container(
-      height: 44,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          5,
-        ),
-        border: Border.all(
-          color: Colors.green,
-        ),
-      ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 32,
-        vertical: 8,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Expanded(
-              child: Text(
-            label,
-            style: TextStyle(fontSize: 16),
-          )),
-          Expanded(
-            child: dropdownDepartment(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget dropdownDepartment() {
-    return Container(
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          hint: Text("Chọn phòng"),
-          value: currentSelectedValue,
-          isDense: true,
-          onChanged: (newValue) {
-            setState(() {
-              currentSelectedValue = newValue;
-            });
-            print(currentSelectedValue);
-          },
-          items: widget.dropDownItems.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
-    );
+    publishMessage('registertb', jsonEncode(tb));
   }
 
   void showLoadingDialog() {
@@ -342,14 +261,8 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   @override
   void dispose() {
     scrollController.dispose();
-    nameController.dispose();
+    vitriController.dispose();
     idController.dispose();
-    gioitinhController.dispose();
-    ngaysinhController.dispose();
-    sodienthoaiController.dispose();
-    diachiController.dispose();
-    giosangController.dispose();
-    giochieuController.dispose();
     super.dispose();
   }
 }

@@ -27,32 +27,33 @@ class EditDeviceDialog extends StatefulWidget {
 }
 
 class _EditDeviceDialogState extends State<EditDeviceDialog> {
-  static const UPDATE_DEVICE = 'updateF0';
-  static const DELETE_DEVICE = 'deleteF0';
+  static const UPDATE_DEVICE = 'updatetb';
+  static const DELETE_DEVICE = 'deletetb';
   ThietBi updatedDevice;
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   final scrollController = ScrollController();
   final idController = TextEditingController();
-  final nameController = TextEditingController();
-  final gioitinhController = TextEditingController();
-  final ngaysinhController = TextEditingController();
-  final sodienthoaiController = TextEditingController();
-  final diachiController = TextEditingController();
-  final giosangController = TextEditingController();
-  final giochieuController = TextEditingController();
+  final vitriController = TextEditingController();
 
   MQTTClientWrapper mqttClientWrapper;
   SharedPrefsHelper sharedPrefsHelper;
   String pubTopic = '';
   String currentSelectedValue;
   ThietBi updatloedDevice;
+  String iduser;
 
   @override
   void initState() {
     initMqtt();
+    getSharedPref();
     initController();
     super.initState();
+  }
+
+  Future<void> getSharedPref() async {
+    sharedPrefsHelper = SharedPrefsHelper();
+    iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
   }
 
   Future<void> initMqtt() async {
@@ -77,13 +78,8 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   }
 
   void initController() async {
-    idController.text = widget.thietbi.mabenhnhan;
-    currentSelectedValue = widget.thietbi.maphong;
-    nameController.text = widget.thietbi.hoten;
-    gioitinhController.text = widget.thietbi.gioitinh;
-    sodienthoaiController.text = widget.thietbi.sodienthoai;
-    diachiController.text = widget.thietbi.diachi;
-    ngaysinhController.text = widget.thietbi.ngaysinh;
+    idController.text = widget.thietbi.mathietbi;
+    vitriController.text = widget.thietbi.vitri;
   }
 
   @override
@@ -113,113 +109,13 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
                   'Họ và tên',
                   Icon(Icons.vpn_key),
                   TextInputType.text,
-                  nameController,
+                  vitriController,
                 ),
-                buildTextField(
-                  'Giới tính',
-                  Icon(Icons.vpn_key),
-                  TextInputType.text,
-                  gioitinhController,
-                ),
-                buildTextField(
-                  'Ngày sinh',
-                  Icon(Icons.vpn_key),
-                  TextInputType.datetime,
-                  ngaysinhController,
-                ),
-                buildTextField(
-                  'Số điện thoại',
-                  Icon(Icons.vpn_key),
-                  TextInputType.number,
-                  sodienthoaiController,
-                ),
-                buildTextField(
-                  'Địa chỉ',
-                  Icon(Icons.vpn_key),
-                  TextInputType.text,
-                  diachiController
-                ),
-                // buildTextField(
-                //   'Giờ sáng',
-                //   Icon(Icons.vpn_key),
-                //   TextInputType.text,
-                //   giosangController
-                // ),
-                // buildTextField(
-                //   'Giờ chiều',
-                //   Icon(Icons.vpn_key),
-                //   TextInputType.text,
-                //   giochieuController
-                // ),
-                buildTextField(
-                  'Giới tính',
-                  Icon(Icons.vpn_key),
-                  TextInputType.text,
-                  gioitinhController,
-                ),
-                buildDepartment(),
                 deleteButton(),
                 buildButton(),
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget buildDepartment() {
-    return Container(
-      height: 44,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(
-          5,
-        ),
-        border: Border.all(
-          color: Colors.green,
-        ),
-      ),
-      margin: const EdgeInsets.symmetric(
-        horizontal: 32,
-      ),
-      padding: const EdgeInsets.symmetric(horizontal: 16),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Expanded(
-            child: Text(
-              'Mã phòng',
-            ),
-          ),
-          Expanded(
-            child: dropdownDepartment(),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget dropdownDepartment() {
-    return Container(
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          hint: Text("Chọn phòng"),
-          value: currentSelectedValue,
-          isDense: true,
-          onChanged: (newValue) {
-            setState(() {
-              currentSelectedValue = newValue;
-            });
-            print(currentSelectedValue);
-          },
-          items: widget.dropDownItems.map((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
         ),
       ),
     );
@@ -296,13 +192,27 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
                   onPressed: () {
                     pubTopic = DELETE_DEVICE;
                     var d = ThietBi(
-                      widget.thietbi.mabenhnhan,
-                      widget.thietbi.maphong,
-                      widget.thietbi.hoten,
-                      widget.thietbi.gioitinh,
-                      widget.thietbi.ngaysinh,
-                      widget.thietbi.sodienthoai,
-                      widget.thietbi.diachi,
+                      iduser,
+                      widget.thietbi.mathietbi,
+                      widget.thietbi.vitri,
+                      widget.thietbi.soloi,
+                      widget.thietbi.dienap,
+                      widget.thietbi.trangthai,
+                      widget.thietbi.TDS,
+                      widget.thietbi.Loi1,
+                      widget.thietbi.Loi2,
+                      widget.thietbi.Loi3,
+                      widget.thietbi.Loi4,
+                      widget.thietbi.Loi5,
+                      widget.thietbi.Loi6,
+                      widget.thietbi.Loi7,
+                      widget.thietbi.Loi8,
+                      widget.thietbi.Loi9,
+                      widget.thietbi.Loi10,
+                      widget.thietbi.Loi11,
+                      widget.thietbi.Loi12,
+                      widget.thietbi.ngaykichhoat,
+                      widget.thietbi.timeupdate,
                       Constants.mac,
                     );
                     publishMessage(pubTopic, jsonEncode(d));
@@ -366,13 +276,27 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
 
   Future<void> _tryEdit() async {
     updatedDevice = ThietBi(
-      idController.text,
-      currentSelectedValue,
-      nameController.text,
-      gioitinhController.text,
-      ngaysinhController.text,
-      sodienthoaiController.text,
-      diachiController.text,
+      iduser,
+      widget.thietbi.mathietbi,
+      widget.thietbi.vitri,
+      widget.thietbi.soloi,
+      widget.thietbi.dienap,
+      widget.thietbi.trangthai,
+      widget.thietbi.TDS,
+      widget.thietbi.Loi1,
+      widget.thietbi.Loi2,
+      widget.thietbi.Loi3,
+      widget.thietbi.Loi4,
+      widget.thietbi.Loi5,
+      widget.thietbi.Loi6,
+      widget.thietbi.Loi7,
+      widget.thietbi.Loi8,
+      widget.thietbi.Loi9,
+      widget.thietbi.Loi10,
+      widget.thietbi.Loi11,
+      widget.thietbi.Loi12,
+      widget.thietbi.ngaykichhoat,
+      widget.thietbi.timeupdate,
       Constants.mac,
     );
     pubTopic = UPDATE_DEVICE;
@@ -393,13 +317,7 @@ class _EditDeviceDialogState extends State<EditDeviceDialog> {
   void dispose() {
     scrollController.dispose();
     idController.dispose();
-    nameController.dispose();
-    gioitinhController.dispose();
-    ngaysinhController.dispose();
-    sodienthoaiController.dispose();
-    diachiController.dispose();
-    giosangController.dispose();
-    giochieuController.dispose();
+    vitriController.dispose();
     super.dispose();
   }
 }

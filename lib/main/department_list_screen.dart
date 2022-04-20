@@ -2,18 +2,28 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
-import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/model/department.dart';
-import 'package:technonhiptim/navigator.dart';
+import 'package:technonhiptim/model/loi.dart';
+import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
 
 class DepartmentListScreen extends StatefulWidget {
+  final ThietBi thietBi;
+  final Function(dynamic) updateCallback;
+
+  const DepartmentListScreen({
+    Key key,
+    this.thietBi,
+    this.updateCallback,
+  }) : super(key: key);
+
   @override
   _DepartmentListScreenState createState() => _DepartmentListScreenState();
 }
@@ -26,20 +36,56 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
   MQTTClientWrapper mqttClientWrapper;
 
   String pubTopic;
+  List<Loi> listLoi = new List();
 
   bool isLoading = true;
 
   @override
   void initState() {
-    departments.add(Department('Lõi số 1', 'p101', 'mac'));
-    departments.add(Department('Lõi số 2', 'p102', 'mac'));
-    departments.add(Department('Lõi số 3', 'p103', 'mac'));
-    departments.add(Department('Lõi số 4', 'p103', 'mac'));
-    departments.add(Department('Lõi số 5', 'p103', 'mac'));
-    departments.add(Department('Lõi số 6', 'p103', 'mac'));
-    isLoading = false;
-    initMqtt();
+    ThietBi tb = widget.thietBi;
 
+    if (tb.Loi1 != "0") {
+      listLoi.add(Loi('Lõi 1', tb.Loi1.split(',')[0], tb.Loi1.split(',')[1]));
+    }
+    if (tb.Loi2 != "0") {
+      listLoi.add(Loi('Lõi 2', tb.Loi2.split(',')[0], tb.Loi2.split(',')[1]));
+    }
+    if (tb.Loi3 != "0") {
+      listLoi.add(Loi('Lõi 3', tb.Loi3.split(',')[0], tb.Loi3.split(',')[1]));
+    }
+    if (tb.Loi4 != "0") {
+      listLoi.add(Loi('Lõi 4', tb.Loi4.split(',')[0], tb.Loi4.split(',')[1]));
+    }
+    if (tb.Loi5 != "0") {
+      listLoi.add(Loi('Lõi 5', tb.Loi5.split(',')[0], tb.Loi5.split(',')[1]));
+    }
+    if (tb.Loi6 != "0") {
+      listLoi.add(Loi('Lõi 6', tb.Loi6.split(',')[0], tb.Loi6.split(',')[1]));
+    }
+    if (tb.Loi7 != "0") {
+      listLoi.add(Loi('Lõi 7', tb.Loi7.split(',')[0], tb.Loi7.split(',')[1]));
+    }
+    if (tb.Loi8 != "0") {
+      listLoi.add(Loi('Lõi 8', tb.Loi8.split(',')[0], tb.Loi8.split(',')[1]));
+    }
+    if (tb.Loi9 != "0") {
+      listLoi.add(Loi('Lõi 9', tb.Loi9.split(',')[0], tb.Loi9.split(',')[1]));
+    }
+    if (tb.Loi10 != "0") {
+      listLoi
+          .add(Loi('Lõi 10', tb.Loi10.split(',')[0], tb.Loi10.split(',')[1]));
+    }
+    if (tb.Loi11 != "0") {
+      listLoi
+          .add(Loi('Lõi 11', tb.Loi11.split(',')[0], tb.Loi11.split(',')[1]));
+    }
+    if (tb.Loi12 != "0") {
+      listLoi
+          .add(Loi('Lõi 12', tb.Loi12.split(',')[0], tb.Loi12.split(',')[1]));
+    }
+    isLoading = false;
+
+    initMqtt();
     super.initState();
   }
 
@@ -91,34 +137,29 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: _onWillPop,
-      child: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blueAccent,
-          automaticallyImplyLeading: false,
-          title: Text(
-            'Danh sách phòng',
-            style: TextStyle(
-              color: Colors.white,
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.blueAccent,
+        automaticallyImplyLeading: false,
+        title: Text(
+          'Danh sách lõi loc',
+          style: TextStyle(
+            color: Colors.white,
           ),
-          centerTitle: true,
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  navigatorPushAndRemoveUntil(context, LoginPage());
-                }),
-          ],
         ),
-        body: isLoading
-            ? Center(child: CircularProgressIndicator())
-            : buildBody(),
+        centerTitle: true,
+        actions: [
+          // IconButton(
+          //     icon: Icon(
+          //       Icons.logout,
+          //       color: Colors.black,
+          //     ),
+          //     onPressed: () {
+          //       navigatorPushAndRemoveUntil(context, LoginPage());
+          //     }),
+        ],
       ),
+      body: buildBody(),
     );
   }
 
@@ -170,16 +211,16 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         child: ListView.builder(
           scrollDirection: Axis.vertical,
           shrinkWrap: true,
-          itemCount: departments.length,
+          itemCount: listLoi.length,
           itemBuilder: (context, index) {
-            return itemView(departments[index]);
+            return itemView(listLoi[index]);
           },
         ),
       ),
     );
   }
 
-  Widget itemView(Department department) {
+  Widget itemView(Loi loi) {
     return InkWell(
       onTap: () async {
         // navigatorPush(
@@ -200,9 +241,9 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
             Expanded(
               child: Row(
                 children: [
-                  elementIcon(department),
-                  elementInfo(department),
-                  reloadButton(department),
+                  Expanded(child: elementIcon(loi)),
+                  Expanded(child: elementInfo(loi)),
+                  Expanded(child: reloadButton(loi)),
                 ],
               ),
             ),
@@ -212,7 +253,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
     );
   }
 
-  Widget elementIcon(Department department) {
+  Widget elementIcon(Loi loi) {
     return Container(
       margin: const EdgeInsets.all(8),
       width: 15,
@@ -233,7 +274,11 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
     );
   }
 
-  Widget elementInfo(Department department) {
+  Widget elementInfo(Loi loi) {
+    DateTime tempDate = new DateFormat("MM/dd/yyyy").parse(loi.ngay);
+    final date2 = DateTime.now();
+    final difference = tempDate.difference(date2).inDays;
+
     return Container(
       padding: const EdgeInsets.all(8),
       child: Column(
@@ -241,13 +286,13 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            department.tenphong,
+            loi.ten,
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
           SizedBox(
             height: 5,
           ),
-          Text('Thời gian còn lại của lõi: 1200/1200 giờ'),
+          Text('Thời gian còn lại $difference ngày'),
           SizedBox(
             height: 5,
           ),
@@ -256,7 +301,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
             height: 10,
             width: 300,
             child: LiquidLinearProgressIndicator(
-              value: 0.6,
+              value: difference / 90 * 100,
               // Defaults to 0.5.
               valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
               // Defaults to the current Theme's accentColor.
@@ -274,7 +319,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
     );
   }
 
-  Widget reloadButton(Department department) {
+  Widget reloadButton(Loi loi) {
     return Container(
       child: IconButton(
         icon: Image.asset(

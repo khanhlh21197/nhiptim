@@ -7,7 +7,6 @@ import 'package:technonhiptim/Widget/bezierContainer.dart';
 import 'package:technonhiptim/helper/constants.dart';
 import 'package:technonhiptim/helper/loader.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
-import 'package:technonhiptim/main/benh_nhan.dart';
 import 'package:technonhiptim/main/home_screen.dart';
 import 'package:technonhiptim/model/user.dart';
 import 'package:technonhiptim/navigator.dart';
@@ -183,9 +182,6 @@ class _LoginPageState extends State<LoginPage> {
             HomeScreen(
               loginResponse: responseMap,
             ));
-      }
-      if (_emailController.text != 'admin' && switchValue == true) {
-        navigatorPushAndRemoveUntil(context, BenhNhan());
       }
       // if (switchValue) {
       //   navigatorPushAndRemoveUntil(context,BenhNhan());
@@ -379,8 +375,8 @@ class _LoginPageState extends State<LoginPage> {
     return Container(
       child: Image.asset(
         'images/cres_logo.jpg',
-        width: 75,
-        height: 75,
+        width: 170,
+        height: 170,
       ),
     );
   }
@@ -439,14 +435,27 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       SizedBox(height: height * .2),
                       _title(),
+                      Text(
+                        'Viện tài nguyên và môi trường',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.blueAccent,
+                            fontSize: 20),
+                      ),
                       // _header(),
-                      SizedBox(height: 50),
+                      SizedBox(height: 40),
                       _emailPasswordWidget(),
+                      SizedBox(height: 20),
                       _submitButton(),
-                      switchContainer(),
+                      // switchContainer(),
                       _divider(),
                       // _facebookButton(),
                       switchValue ? Container() : _createAccountLabel(),
+                      Text(
+                        'Sản phẩm được sản xuất bởi Techno',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
                     ],
                   ),
                 ),

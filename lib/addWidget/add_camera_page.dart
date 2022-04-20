@@ -81,14 +81,14 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
                   TextInputType.visiblePassword,
                   idController,
                 ),
-                // buildTextField(
-                //   'Tên thiết bị *',
-                //   Icon(Icons.email),
-                //   TextInputType.text,
-                //   vitriController,
-                // ),
-                buildBenhNhan('Mã bệnh nhân *'),
-                buildDepartment('Mã phòng *'),
+                buildTextField(
+                  'Vị trí',
+                  Icon(Icons.email),
+                  TextInputType.text,
+                  vitriController,
+                ),
+                // buildBenhNhan('Mã bệnh nhân *'),
+                // buildDepartment('Mã phòng *'),
                 buildButton(),
               ],
             ),
@@ -267,7 +267,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
   }
 
   void tryAdd() {
-    if (idController.text.isEmpty || currentSelectedValue.isEmpty) {
+    if (idController.text.isEmpty) {
       Dialogs.showAlertDialog(context, 'Vui lòng nhập đủ thông tin!');
       return;
     }
@@ -277,7 +277,7 @@ class _AddCameraScreenState extends State<AddCameraScreen> {
       currentSelectedMaBenhNhan,
       Constants.mac,
     );
-    publishMessage('registercam', jsonEncode(camera));
+    publishMessage('registertb', jsonEncode(camera));
   }
 
   Widget buildDepartment(String label) {

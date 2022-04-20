@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:technonhiptim/addWidget/add_device_page.dart';
 import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/helper/bottom_navigation_bar.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
-import 'package:technonhiptim/login/login_page.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/detail_screen.dart';
 import 'package:technonhiptim/main/filter_element_screen.dart';
-import 'package:technonhiptim/main/tra_cuu_screen.dart';
 import 'package:technonhiptim/main/user_profile_page.dart';
+import 'package:technonhiptim/main/yeu_cau.dart';
 
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key, this.loginResponse, this.index}) : super(key: key);
@@ -27,6 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
   final PageController _pageController = PageController();
   int quyen;
   SharedPrefsHelper sharedPrefsHelper;
+  String iduser;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -37,9 +38,14 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     sharedPrefsHelper = SharedPrefsHelper();
+    getSharedPref();
     initBottomBarItems(1);
     initWidgetOptions(1);
     super.initState();
+  }
+
+  Future<void> getSharedPref() async {
+    iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
   }
 
   void getPermission() async {
@@ -56,31 +62,27 @@ class _HomeScreenState extends State<HomeScreen> {
         bottomBarItems = [
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.meeting_room_outlined,
+              Icons.water_damage,
             ),
             label: 'Trang chủ',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_circle,
+              Icons.wine_bar,
             ),
             label: 'Lõi lọc',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_circle,
+              Icons.add_call,
             ),
-            label: 'Thiết bị',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Thêm',
+            label: 'Yêu cầu',
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.account_circle,
+              Icons.account_circle_rounded,
             ),
-            label: 'Bảo hành',
+            label: 'Tài khoản',
           ),
         ];
         break;
@@ -96,7 +98,6 @@ class _HomeScreenState extends State<HomeScreen> {
           DepartmentListScreen(),
           FilterElementScreen(),
           AddScreen(),
-          TraCuuScreen(),
         ];
         break;
     }
@@ -128,16 +129,17 @@ class _HomeScreenState extends State<HomeScreen> {
       //     FABBottomAppBarItem(iconData: Icons.search, text: 'Tìm kiếm'),
       //   ],
       // ),
-      // // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // // floatingActionButton: FloatingActionButton(
-      // //   onPressed: () {
-      // //     Navigator.push(
-      // //       context,
-      // //       MaterialPageRoute(builder: (context) => TrangChu()),
-      // //     );        },
-      // //   child: Icon(Icons.home),
-      // //   elevation: 2.0,
-      // // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddDeviceScreen()),
+          );
+        },
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      ),
     );
   }
 
@@ -156,8 +158,8 @@ class _HomeScreenState extends State<HomeScreen> {
       children: [
         DetailScreen(),
         DepartmentListScreen(),
-        LoginPage(),
-        AddScreen(),
+        YeuCau(),
+        // AddScreen(),
         UserProfilePage(),
       ],
       onPageChanged: (page) {

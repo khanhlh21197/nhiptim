@@ -6,15 +6,25 @@ import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
-import 'package:technonhiptim/login/login_page.dart';
+import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/model/department.dart';
+import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
 import 'package:technonhiptim/response/device_response.dart';
 
 import '../helper/constants.dart' as Constants;
 
 class DeviceDetailScreen extends StatefulWidget {
+  final ThietBi thietBi;
+  final Function(dynamic) updateCallback;
+
+  const DeviceDetailScreen({
+    Key key,
+    this.thietBi,
+    this.updateCallback,
+  }) : super(key: key);
+
   @override
   _DeviceDetailScreenState createState() => _DeviceDetailScreenState();
 }
@@ -27,16 +37,12 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   MQTTClientWrapper mqttClientWrapper;
 
   String pubTopic;
-
   bool isLoading = true;
 
   @override
   void initState() {
-    departments.add(Department('phong 101', 'p101', 'mac'));
-    departments.add(Department('phong 102', 'p102', 'mac'));
-    departments.add(Department('phong 103', 'p103', 'mac'));
     isLoading = false;
-    initMqtt();
+    // initMqtt();
 
     super.initState();
   }
@@ -45,7 +51,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
     mqttClientWrapper = MQTTClientWrapper(
         () => print('Success'), (message) => handleDepartment(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
-    getDepartments();
+    // getDepartments();
   }
 
   void getDepartments() {
@@ -102,16 +108,25 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             ),
           ),
           centerTitle: true,
-          actions: [
-            IconButton(
-                icon: Icon(
-                  Icons.logout,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  navigatorPushAndRemoveUntil(context, LoginPage());
-                }),
-          ],
+          // actions: [
+          //   IconButton(
+          //       icon: Icon(
+          //         Icons.edit,
+          //         color: Colors.black,
+          //       ),
+          //       onPressed: () {
+          //         navigatorPushAndRemoveUntil(context, EditDeviceDialog(
+          //           thietbi: tbs[selectedIndex],
+          //           dropDownItems: dropDownItems,
+          //           deleteCallback: (param) {
+          //             getDevices();
+          //           },
+          //           updateCallback: (updatedDevice) {
+          //             getDevices();
+          //           },
+          //         ),);
+          //       }),
+          // ],
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
@@ -119,6 +134,22 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       ),
     );
   }
+
+  // void getDevices() async {
+  //   ThietBi t = ThietBi(
+  //     '1',
+  //     '2',
+  //     '3',
+  //     '4',
+  //     '5',
+  //     '6',
+  //     '7',
+  //     Constants.mac,
+  //   );
+  //   pubTopic = LOGIN_DEVICE;
+  //   publishMessage(pubTopic, jsonEncode(t));
+  //   showLoadingDialog();
+  // }
 
   Widget buildBody() {
     return Container(
@@ -161,24 +192,35 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   }
 
   Widget deviceInfo() {
-    return Container(
-      padding: const EdgeInsets.all(32),
-      child: PhysicalModel(
-        color: Colors.white,
-        elevation: 5,
-        shadowColor: Colors.blue,
-        borderRadius: BorderRadius.circular(20),
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            children: [
-              deviceInfoItem(
-                  'Tình trạng máy: ', 'Hoạt động ổn định', Colors.green),
-              deviceInfoItem('Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
-              deviceInfoItem('Số lõi: ', '8 lõi', Colors.black),
-              deviceInfoItem(
-                  'Thời gian bảo hành: ', 'Chưa kích hoạt', Colors.red),
-            ],
+    return GestureDetector(
+      behavior: HitTestBehavior.translucent,
+      onTap: () {
+        navigatorPush(
+            context,
+            DepartmentListScreen(
+              thietBi: widget.thietBi,
+            ));
+      },
+      child: Container(
+        padding: const EdgeInsets.all(32),
+        child: PhysicalModel(
+          color: Colors.white,
+          elevation: 5,
+          shadowColor: Colors.blue,
+          borderRadius: BorderRadius.circular(20),
+          child: Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                deviceInfoItem(
+                    'Tình trạng máy: ', 'Hoạt động ổn định', Colors.green),
+                deviceInfoItem(
+                    'Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
+                deviceInfoItem('Số lõi: ', '8 lõi', Colors.black),
+                deviceInfoItem(
+                    'Thời gian bảo hành: ', 'Chưa kích hoạt', Colors.red),
+              ],
+            ),
           ),
         ),
       ),

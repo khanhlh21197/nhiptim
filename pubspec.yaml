@@ -90,6 +90,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
+#  fonts:
+#    - family: MyFlutterApp // tên của bộ icons . Nhớ đặt đúng tên đã đặt như trên web nhé
+#      fonts:
+#        - asset: assets/fonts/MyFlutterApp.ttf // đường dẫn file .ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

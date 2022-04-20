@@ -359,7 +359,6 @@ class _GiamSatState extends State<GiamSat> {
     return Expanded(
       child: Text(
         data,
-        style: TextStyle(fontSize: 14, color: people.color ?? Colors.black),
         textAlign: TextAlign.center,
       ),
       flex: flexValue,

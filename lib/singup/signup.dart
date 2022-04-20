@@ -126,36 +126,41 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Widget _title() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        const Icon(
-          Icons.add_circle_outline,
-          size: 40,
-          color: Colors.red,
-        ),
-        RichText(
-          textAlign: TextAlign.center,
-          text: TextSpan(
-              text: 'H',
-              style: GoogleFonts.portLligatSans(
-                fontSize: 30,
-                fontWeight: FontWeight.w700,
-                color: Colors.blueAccent,
-              ),
-              children: const [
-                TextSpan(
-                  text: 'ealth',
-                  style: TextStyle(color: Colors.black, fontSize: 30),
-                ),
-                TextSpan(
-                  text: 'Care',
-                  style: TextStyle(color: Colors.blueAccent, fontSize: 30),
-                ),
-              ]),
-        ),
-      ],
+    // return Row(
+    //   mainAxisAlignment: MainAxisAlignment.center,
+    //   crossAxisAlignment: CrossAxisAlignment.center,
+    //   children: [
+    //     const Icon(
+    //       Icons.add_circle_outline,
+    //       size: 40,
+    //       color: Colors.red,
+    //     ),
+    //     RichText(
+    //       textAlign: TextAlign.center,
+    //       text: TextSpan(
+    //           text: 'H',
+    //           style: GoogleFonts.portLligatSans(
+    //             fontSize: 30,
+    //             fontWeight: FontWeight.w700,
+    //             color: Colors.blueAccent,
+    //           ),
+    //           children: const [
+    //             TextSpan(
+    //               text: 'ealth',
+    //               style: TextStyle(color: Colors.black, fontSize: 30),
+    //             ),
+    //             TextSpan(
+    //               text: 'Care',
+    //               style: TextStyle(color: Colors.blueAccent, fontSize: 30),
+    //             ),
+    //           ]),
+    //     ),
+    //   ],
+    // );
+    return Container(
+      height: 100,
+      width: 100,
+      child: Image.asset('images/CRES-DONE-01.jpg'),
     );
   }
 
@@ -202,6 +207,7 @@ class _SignUpPageState extends State<SignUpPage> {
               child: BezierContainer(),
             ),
             Container(
+              color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(

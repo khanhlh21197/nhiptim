@@ -15,8 +15,9 @@ import 'package:technonhiptim/response/device_response.dart';
 import '../helper/constants.dart' as Constants;
 
 class AddScreen extends StatefulWidget {
-
-  const AddScreen({Key key,}) : super(key: key);
+  const AddScreen({
+    Key key,
+  }) : super(key: key);
 
   @override
   _AddScreenState createState() => _AddScreenState();
@@ -57,22 +58,35 @@ class _AddScreenState extends State<AddScreen> {
     Future.delayed(Duration(seconds: 1), () {
       getDepartment();
     });
-
   }
 
   void getDevices() async {
-    ThietBi t = ThietBi(
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
-      '',
+    ThietBi tb = ThietBi(
+      'iduser',
+      'idController.text',
+      'vitriController.text',
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
+      "",
       Constants.mac,
     );
     pubTopic = GET_BENHNHAN;
-    publishMessage(pubTopic, jsonEncode(t));
+    publishMessage(pubTopic, jsonEncode(tb));
     showLoadingDialog();
   }
 
@@ -106,11 +120,12 @@ class _AddScreenState extends State<AddScreen> {
       width: double.infinity,
       child: Column(
         children: [
-          buildButton('Thêm bệnh nhân ', Icons.accessibility_new, 1),
+          // buildButton('Thêm bệnh nhân ', Icons.accessibility_new, 1),
+          // horizontalLine(),
+          // buildButton('Thêm phòng', Icons.devices, 2),
           horizontalLine(),
-          buildButton('Thêm phòng', Icons.devices, 2),
-          horizontalLine(),
-          buildButton('Thêm thiết bị', Icons.airline_seat_individual_suite_rounded, 3),
+          buildButton(
+              'Thêm thiết bị', Icons.airline_seat_individual_suite_rounded, 3),
         ],
       ),
     );
@@ -125,19 +140,22 @@ class _AddScreenState extends State<AddScreen> {
       onTap: () {
         switch (option) {
           case 1:
-              navigatorPush(
-                  context,
-                  AddDeviceScreen(
-                    dropDownItems: dropDownItems,
-                  ));
+            navigatorPush(
+                context,
+                AddDeviceScreen(
+                  dropDownItems: dropDownItems,
+                ));
             break;
           case 2:
             navigatorPush(context, AddDepartmentScreen());
             break;
           case 3:
-            navigatorPush(context, AddCameraScreen(
-              dropDownItems: dropDownItems, dropBenhNhan: dropBenhNhan,
-            ));
+            navigatorPush(
+                context,
+                AddCameraScreen(
+                  dropDownItems: dropDownItems,
+                  dropBenhNhan: dropBenhNhan,
+                ));
         }
       },
       child: Container(
@@ -196,7 +214,7 @@ class _AddScreenState extends State<AddScreen> {
         benhnhans = response.id.map((e) => ThietBi.fromJson(e)).toList();
         dropBenhNhan.clear();
         benhnhans.forEach((element) {
-          dropBenhNhan.add(element.mabenhnhan);
+          dropBenhNhan.add(element.mathietbi);
         });
         hideLoadingDialog();
         print('_AddScreenState.handle nguoi ${dropBenhNhan.length}');

@@ -1,4 +1,3 @@
-
 import 'dart:ui';
 
 final double defaultZoom = 10.8746;
@@ -48,7 +47,7 @@ final String serverUri = "103.237.145.184";
 // final int port = 4567;
 //  final int port = 6789;
 final int port = 8796;
-const GET_DEVICE = 'gettbmatram';
+const GET_DEVICE = 'gettbid';
 final String login_topic = "loginuser";
 final String patient_login_topic = "loginbenhnhan";
 final String home_status = "statusnha";
@@ -58,7 +57,7 @@ final String device_status = "statusphong";
 // String mac = "02:00:00:00:00:00";
 String mac = "";
 
-const one_signal_app_id = 'a1a1e6bc-a6a4-477f-841a-911ad52646ff';
+const one_signal_app_id = '2b8a51c6-9a40-4978-88b5-7a89d2a5b9cb';
 
 const UPDATE_USER = 'updateuser';
 const UPDATE_PARENT = 'updateph';
@@ -72,7 +71,6 @@ const kPrimaryColor = Color(0xFF6F35A5);
 const kPrimaryLightColor = Color(0xFFF1E6FF);
 
 //OneSignal App ID
-
 
 // Future<String> getId() async {
 //   DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
