@@ -55,22 +55,28 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
     mqttClientWrapper.subscribe(widget.thietBi.mathietbi, (_message) {
       print('_DetailScreenState.initMqtt $_message');
       var result = _message.replaceAll("\"", "").split('&');
+      String trangthai = '';
 
-      try {
-        String s = result[1];
-        List<int> ints = List();
-        s = s.replaceAll('[', '');
-        s = s.replaceAll(']', '');
-        List<String> strings = s.split(',');
-        for (int i = 0; i < strings.length; i++) {
-          ints.add(int.parse(strings[i]));
-        }
-        widget.thietBi.trangthai = utf8.decode(ints);
-        widget.thietBi.TDS = utf8.encode(result[0]) as String;
-        setState(() {});
-      } catch (e) {
-        print(e);
+      switch (result[1]) {
+        case '1':
+          trangthai = 'Lọc';
+          break;
+        case '2':
+          trangthai = 'Xả';
+          break;
+        case '3':
+          trangthai = 'Rửa hóa chất';
+          break;
+        case '4':
+          trangthai = 'Dừng máy';
+          break;
+        case '5':
+          trangthai = 'Mất kết nối';
+          break;
       }
+      widget.thietBi.trangthai = trangthai;
+      widget.thietBi.TDS = result[0];
+      setState(() {});
     });
     // getDepartments();
   }
@@ -207,6 +213,27 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   }
 
   Widget deviceInfo() {
+    String trangthai = '';
+    switch (widget.thietBi.trangthai) {
+      case '1':
+        trangthai = 'Lọc';
+        break;
+      case '2':
+        trangthai = 'Xả';
+        break;
+      case '3':
+        trangthai = 'Rửa hóa chất';
+        break;
+      case '4':
+        trangthai = 'Dừng máy';
+        break;
+      case '5':
+        trangthai = 'Mất kết nối';
+        break;
+      default:
+        trangthai = 'Không hoạt động';
+        break;
+    }
     return GestureDetector(
       behavior: HitTestBehavior.translucent,
       onTap: () {
@@ -227,8 +254,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             padding: const EdgeInsets.all(20),
             child: Column(
               children: [
-                deviceInfoItem(
-                    'Tình trạng máy: ', widget.thietBi.trangthai, Colors.green),
+                deviceInfoItem('Tình trạng máy: ', trangthai, Colors.green),
                 deviceInfoItem('Tên máy: ', 'Máy lọc nước Cres', Colors.black),
                 deviceInfoItem(
                     'Điện áp: ', widget.thietBi.dienap, Colors.black),
