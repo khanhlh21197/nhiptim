@@ -2,7 +2,6 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:technonhiptim/Widget/bezierContainer.dart';
 import 'package:technonhiptim/helper/loader.dart';
 import 'package:technonhiptim/login/login_page.dart';
@@ -24,7 +23,6 @@ class _SignUpPageState extends State<SignUpPage> {
   MQTTClientWrapper mqttClientWrapper;
   User registerUser;
   bool _switchValue = false;
-
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
@@ -160,7 +158,9 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
       height: 100,
       width: 100,
-      child: Image.asset('images/CRES-DONE-01.jpg'),
+      child: Image.asset(
+        'images/cres_logo.jpg',
+      ),
     );
   }
 
@@ -179,7 +179,6 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
 
   Widget _emailPasswordWidget() {
     return Column(
@@ -266,8 +265,6 @@ class _SignUpPageState extends State<SignUpPage> {
       _showToast(context);
     }
   }
-
-
 
   void _showToast(BuildContext context) {
     Dialogs.showAlertDialog(context, 'Đăng ký thất bại, vui lòng thử lại sau!');

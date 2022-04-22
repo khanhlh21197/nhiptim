@@ -42,7 +42,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   @override
   void initState() {
     isLoading = false;
-    // initMqtt();
+    initMqtt();
 
     super.initState();
   }
@@ -51,6 +51,27 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
     mqttClientWrapper = MQTTClientWrapper(
         () => print('Success'), (message) => handleDepartment(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
+
+    mqttClientWrapper.subscribe(widget.thietBi.mathietbi, (_message) {
+      print('_DetailScreenState.initMqtt $_message');
+      var result = _message.replaceAll("\"", "").split('&');
+
+      try {
+        String s = result[1];
+        List<int> ints = List();
+        s = s.replaceAll('[', '');
+        s = s.replaceAll(']', '');
+        List<String> strings = s.split(',');
+        for (int i = 0; i < strings.length; i++) {
+          ints.add(int.parse(strings[i]));
+        }
+        widget.thietBi.trangthai = utf8.decode(ints);
+        widget.thietBi.TDS = utf8.encode(result[0]) as String;
+        setState(() {});
+      } catch (e) {
+        print(e);
+      }
+    });
     // getDepartments();
   }
 
@@ -160,12 +181,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
         children: [
           liquidProgress(),
           deviceInfo(),
-          Image.asset(
-            'images/water_filter.png',
-            width: 300,
-            height: 150,
-            fit: BoxFit.cover,
-          ),
         ],
       ),
     );
@@ -213,12 +228,16 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             child: Column(
               children: [
                 deviceInfoItem(
-                    'Tình trạng máy: ', 'Hoạt động ổn định', Colors.green),
+                    'Tình trạng máy: ', widget.thietBi.trangthai, Colors.green),
+                deviceInfoItem('Tên máy: ', 'Máy lọc nước Cres', Colors.black),
                 deviceInfoItem(
-                    'Tên máy: ', 'Máy lọc nước Karofi', Colors.black),
-                deviceInfoItem('Số lõi: ', '8 lõi', Colors.black),
+                    'Điện áp: ', widget.thietBi.dienap, Colors.black),
+                deviceInfoItem('TDS: ', widget.thietBi.TDS, Colors.black),
                 deviceInfoItem(
-                    'Thời gian bảo hành: ', 'Chưa kích hoạt', Colors.red),
+                    'Số lõi: ', '${widget.thietBi.soloi} lõi', Colors.black),
+                deviceInfoItem('Ngày kích hoạt ',
+                    widget.thietBi.ngaykichhoat.split(',')[0], Colors.red),
+                deviceInfoItem('Thời gian bảo hành ', '3 năm', Colors.red),
               ],
             ),
           ),
@@ -236,7 +255,10 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
           Text(label, textAlign: TextAlign.left),
           Text(content,
               textAlign: TextAlign.right,
-              style: TextStyle(color: color, fontWeight: FontWeight.bold))
+              style: TextStyle(
+                color: color,
+                fontWeight: FontWeight.bold,
+              ))
         ],
       ),
     );
