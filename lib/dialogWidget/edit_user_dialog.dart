@@ -387,7 +387,7 @@ class _EditUserDialogState extends State<EditUserDialog>
       permission,
       '',
     );
-    updatedUser.iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
+    updatedUser.userid = await sharedPrefsHelper.getStringValuesSF('iduser');
     publishMessage(pubTopic, jsonEncode(updatedUser));
   }
 
@@ -404,7 +404,7 @@ class _EditUserDialogState extends State<EditUserDialog>
       '',
     );
     updatedUser.passmoi = newPasswordController.text;
-    updatedUser.iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
+    updatedUser.userid = await sharedPrefsHelper.getStringValuesSF('iduser');
     ChangePassword changePassword = ChangePassword(
         updatedUser.user,
         updatedUser.pass,

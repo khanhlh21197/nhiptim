@@ -12,8 +12,10 @@ import '../helper/constants.dart' as Constants;
 
 class AddDeviceScreen extends StatefulWidget {
   final List<String> dropDownItems;
+  final Function(dynamic) updateCallback;
 
-  const AddDeviceScreen({Key key, this.dropDownItems}) : super(key: key);
+  const AddDeviceScreen({Key key, this.dropDownItems, this.updateCallback})
+      : super(key: key);
 
   @override
   _AddDeviceScreenState createState() => _AddDeviceScreenState();
@@ -244,6 +246,8 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
   void handle(String message) {
     Map responseMap = jsonDecode(message);
     if (responseMap['result'] == 'true' && responseMap['errorCode'] == '0') {
+      print('$message');
+      widget.updateCallback(message);
       Navigator.pop(context);
     }
   }

@@ -85,7 +85,7 @@ class _SignUpPageState extends State<SignUpPage> {
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
+                  fillColor: Colors.white.withOpacity(0.8),
                   filled: true))
         ],
       ),
@@ -159,7 +159,7 @@ class _SignUpPageState extends State<SignUpPage> {
       height: 100,
       width: 100,
       child: Image.asset(
-        'images/cres_logo.jpg',
+        'images/logo.png',
       ),
     );
   }
@@ -197,6 +197,12 @@ class _SignUpPageState extends State<SignUpPage> {
     final height = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
+        decoration: BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("images/cres_bg.jpg"),
+            fit: BoxFit.cover,
+          ),
+        ),
         height: height,
         child: Stack(
           children: <Widget>[
@@ -206,7 +212,13 @@ class _SignUpPageState extends State<SignUpPage> {
               child: BezierContainer(),
             ),
             Container(
-              color: Colors.white,
+              // decoration: BoxDecoration(
+              //   image: DecorationImage(
+              //     image: AssetImage("images/cres_bg.jpg"),
+              //     fit: BoxFit.cover,
+              //   ),
+              // ),
+              // color: Colors.white,
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: SingleChildScrollView(
                 child: Column(

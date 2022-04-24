@@ -5,6 +5,7 @@ import 'package:clay_containers/widgets/clay_container.dart';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:sleek_circular_slider/sleek_circular_slider.dart';
+import 'package:technonhiptim/addWidget/add_device_page.dart';
 import 'package:technonhiptim/helper/config.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
@@ -48,8 +49,9 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   void initState() {
+    print('init detail screen');
     isLoading = false;
-
+    // getDevices();
     getSharedPrefs();
     initMqtt();
     super.initState();
@@ -108,6 +110,7 @@ class _DetailScreenState extends State<DetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print('build detail screen');
     // matchImages();
     return Scaffold(
       appBar: AppBar(
@@ -121,6 +124,22 @@ class _DetailScreenState extends State<DetailScreen> {
               }),
         ],
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => AddDeviceScreen(
+                updateCallback: (device) {
+                  getDevices();
+                },
+              ),
+            ),
+          );
+        },
+        child: Icon(Icons.add),
+        elevation: 2.0,
+      ),
       body: isLoading
           ? Center(
               child: CircularProgressIndicator(),
@@ -131,6 +150,12 @@ class _DetailScreenState extends State<DetailScreen> {
 
   Widget buildBody() {
     return Container(
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("images/cres_bg.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
       padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
       width: double.infinity,
       child: Column(
@@ -172,7 +197,7 @@ class _DetailScreenState extends State<DetailScreen> {
         padding: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
         margin: const EdgeInsets.symmetric(vertical: 2, horizontal: 2),
         child: PhysicalModel(
-          color: Colors.white,
+          color: Colors.white.withOpacity(0.8),
           elevation: 5,
           shadowColor: Colors.blue,
           borderRadius: BorderRadius.circular(20),
@@ -337,28 +362,7 @@ class _DetailScreenState extends State<DetailScreen> {
     mqttClientWrapper =
         MQTTClientWrapper(() => print('Success'), (message) => handle(message));
     await mqttClientWrapper.prepareMqttClient(Constants.mac);
-
     getDevices();
-
-    // tbs.forEach((element) {
-    //   mqttClientWrapper.subscribe(element.matb, (_message){
-    //     print('_DetailScreenState.initMqtt $_message');
-    //   });
-    // });
-
-    mqttClientWrapper.subscribe(widget.matram, (_message) {
-      print('_DetailScreenState.initMqtt $_message');
-      var result = _message.replaceAll("\"", "").split('&');
-      tbs.forEach((element) {
-        String str = result[2];
-      });
-
-      tbs.forEach((element) {
-        print('_DetailScreenState.initMqtt ${element.mathietbi}');
-        print('_DetailScreenState.initMqtt ${result[0]}');
-        setState(() {});
-      });
-    });
   }
 
   void changeItemColor(ThietBi element) {

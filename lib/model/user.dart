@@ -22,8 +22,8 @@ class User {
   final String quyen;
   @ColumnInfo(name: 'playerid', nullable: false)
   final String playerid;
-  @ColumnInfo(name: 'iduser', nullable: false)
-  String iduser;
+  @ColumnInfo(name: 'userid', nullable: false)
+  String userid;
   String _id;
   String thongbao;
   String trangthai;
@@ -50,7 +50,7 @@ class User {
         sdt = json['sdt'],
         nha = json['nha'],
         mac = json['mac'],
-        iduser = json['iduser'],
+        userid = json['userid'],
         _id = json['_id'],
         khoa = json['khoa'],
         quyen = json['quyen'],
@@ -65,7 +65,7 @@ class User {
         'sdt': sdt,
         'nha': nha,
         'mac': mac,
-        'iduser': iduser,
+        'userid': userid,
         '_id': _id,
         'khoa': khoa,
         'quyen': quyen,

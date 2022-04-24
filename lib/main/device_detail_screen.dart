@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
+import 'package:technonhiptim/helper/media_query_helper.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
@@ -180,22 +181,37 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
 
   Widget buildBody() {
     return Container(
+      height: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.yellow,
+        image: DecorationImage(
+          image: AssetImage("images/cres_bg.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
       width: double.infinity,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        children: [
-          liquidProgress(),
-          deviceInfo(),
-        ],
+      child: Container(
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              SizedBox(
+                height: 20,
+              ),
+              liquidProgress(),
+              deviceInfo(),
+            ],
+          ),
+        ),
       ),
     );
   }
 
   Widget liquidProgress() {
     return Container(
-      width: 250,
-      height: 250,
+      width: ScreenHelper.getWidth(context) * 0.7,
+      height: ScreenHelper.getWidth(context) * 0.7,
       child: LiquidCircularProgressIndicator(
         value: 0.25,
         // Defaults to 0.5.
@@ -244,18 +260,19 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             ));
       },
       child: Container(
-        padding: const EdgeInsets.all(32),
+        padding: const EdgeInsets.all(16),
         child: PhysicalModel(
           color: Colors.white,
           elevation: 5,
           shadowColor: Colors.blue,
           borderRadius: BorderRadius.circular(20),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(16),
             child: Column(
               children: [
                 deviceInfoItem('Tình trạng máy: ', trangthai, Colors.green),
-                deviceInfoItem('Tên máy: ', 'Máy lọc nước Cres', Colors.black),
+                deviceInfoItem('Tên máy: ',
+                    widget.thietBi.mathietbi.substring(0, 6), Colors.black),
                 deviceInfoItem(
                     'Điện áp: ', widget.thietBi.dienap, Colors.black),
                 deviceInfoItem('TDS: ', widget.thietBi.TDS, Colors.black),
@@ -279,12 +296,16 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(label, textAlign: TextAlign.left),
-          Text(content,
-              textAlign: TextAlign.right,
-              style: TextStyle(
-                color: color,
-                fontWeight: FontWeight.bold,
-              ))
+          FittedBox(
+            fit: BoxFit.contain,
+            child: Text(content,
+                textAlign: TextAlign.right,
+                style: TextStyle(
+                  fontSize: ScreenHelper.getWidth(context) * .04,
+                  color: color,
+                  fontWeight: FontWeight.bold,
+                )),
+          )
         ],
       ),
     );
@@ -296,13 +317,15 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          Text('Chỉ số tinh khiết', style: TextStyle(fontSize: 20)),
+          Text('Chỉ số tinh khiết',
+              style: TextStyle(fontSize: ScreenHelper.getWidth(context) * .04)),
           Text('12',
               style: TextStyle(
                   fontSize: 45,
                   color: Colors.blue,
                   fontWeight: FontWeight.bold)),
-          Text('Tốt cho sức khỏe', style: TextStyle(fontSize: 20)),
+          Text('Tốt cho sức khỏe',
+              style: TextStyle(fontSize: ScreenHelper.getWidth(context) * .04)),
         ],
       ),
     );

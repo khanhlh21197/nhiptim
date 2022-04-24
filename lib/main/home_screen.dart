@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:technonhiptim/addWidget/add_device_page.dart';
 import 'package:technonhiptim/addWidget/add_page.dart';
 import 'package:technonhiptim/helper/bottom_navigation_bar.dart';
 import 'package:technonhiptim/helper/shared_prefs_helper.dart';
+import 'package:technonhiptim/main/bao_hanh.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
 import 'package:technonhiptim/main/detail_screen.dart';
 import 'package:technonhiptim/main/filter_element_screen.dart';
@@ -68,9 +68,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           BottomNavigationBarItem(
             icon: Icon(
-              Icons.wine_bar,
+              Icons.ad_units_outlined,
             ),
-            label: 'Lõi lọc',
+            label: 'Liên hệ',
           ),
           BottomNavigationBarItem(
             icon: Icon(
@@ -113,33 +113,8 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: buildBody2(),
+      body: SafeArea(child: buildBody2()),
       bottomNavigationBar: bottomBar(),
-      // bottomNavigationBar: FABBottomAppBar(
-      //   // centerItemText: 'Trang chủ',
-      //   color: Colors.black,
-      //   backgroundColor: Colors.blueAccent,
-      //   selectedColor: Colors.white,
-      //   // notchedShape: CircularNotchedRectangle(),
-      //   onTabSelected: _onItemTapped,
-      //   items: [
-      //     FABBottomAppBarItem(iconData: Icons.meeting_room_outlined, text: 'Phòng'),
-      //     FABBottomAppBarItem(iconData: Icons.account_circle, text: 'Bệnh nhân'),
-      //     FABBottomAppBarItem(iconData: Icons.add, text: 'Thêm'),
-      //     FABBottomAppBarItem(iconData: Icons.search, text: 'Tìm kiếm'),
-      //   ],
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddDeviceScreen()),
-          );
-        },
-        child: Icon(Icons.add),
-        elevation: 2.0,
-      ),
     );
   }
 
@@ -157,7 +132,8 @@ class _HomeScreenState extends State<HomeScreen> {
       controller: _pageController,
       children: [
         DetailScreen(),
-        DepartmentListScreen(),
+        // DepartmentListScreen(),
+        LienHe(),
         YeuCau(),
         // AddScreen(),
         UserProfilePage(),

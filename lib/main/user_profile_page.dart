@@ -1,4 +1,3 @@
-
 import 'dart:async';
 import 'dart:convert';
 
@@ -35,6 +34,7 @@ class _UserProfilePageState extends State<UserProfilePage> {
 
   @override
   void initState() {
+    isLoading = false;
     sharedPrefsHelper = SharedPrefsHelper();
     user = User(
       '',
@@ -59,13 +59,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
   }
 
   void getInfoUser() async {
-    if (widget.switchValue) {
-      pubTopic = Constants.GET_INFO_PARENT;
-    } else {
-      pubTopic = Constants.GET_INFO_USER;
-    }
+    pubTopic = Constants.GET_INFO_USER;
+
     String email = await sharedPrefsHelper.getStringValuesSF('email');
     String password = await sharedPrefsHelper.getStringValuesSF('password');
+    String userid = await sharedPrefsHelper.getStringValuesSF('iduser');
     if (email.isNotEmpty && password.isNotEmpty) {
       User user = User(
         Constants.mac,
@@ -78,11 +76,11 @@ class _UserProfilePageState extends State<UserProfilePage> {
         '',
         '',
       );
+      user.userid = userid;
       publishMessage(pubTopic, jsonEncode(user));
     }
     showLoadingDialog();
   }
-
 
   Widget _placeContainer(String title, Color color, Widget icon) {
     if (title.length > 20) {
@@ -232,63 +230,75 @@ class _UserProfilePageState extends State<UserProfilePage> {
       body: isLoading
           ? Center(child: CircularProgressIndicator())
           : Container(
-        color: Color(0xffe7eaf2),
-        height: double.infinity,
-        child: SingleChildScrollView(
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            padding: EdgeInsets.fromLTRB(40.0, 40, 40, 40),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: <Widget>[
-                user.tenDecode.isEmpty
-                    ? Container()
-                    : CircleAvatar(
-                    backgroundColor: Colors.brown.shade800,
-                    minRadius: 40,
-                    child: Text(
-                      user.tenDecode[0].toUpperCase(),
-                      style: TextStyle(
-                          fontSize: 30, fontWeight: FontWeight.bold),
-                    )),
-                SizedBox(
-                  height: 15,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: AssetImage("images/cres_bg.jpg"),
+                  fit: BoxFit.cover,
                 ),
-                _placeContainer(
-                    user.tenDecode != null
-                        ? 'Tên: ${user.tenDecode}'
-                        : 'Chưa nhập tên',
-                    Colors.white,
-                    null),
-                _placeContainer(
-                    'Tên ĐN: ${user.user ?? ''}', Colors.white, null),
-                _placeContainer(
-                    user.nhaDecode != null
-                        ? 'Địa chỉ: ${user.nhaDecode}'
-                        : 'Chưa nhập địa chỉ',
-                    Colors.white,
-                    null),
-                _placeContainer(
-                    user.sdt != null
-                        ? 'SĐT: ${user.sdt}'
-                        : 'Chưa nhập SĐT',
-                    Colors.white,
-                    null),
-                _editContainer(
-                    'Sửa thông tin', Color(0xffffffff), Icon(Icons.edit)),
-                _logoutContainer(
-                  'Đăng xuất',
-                  Color(0xffffffff),
-                  Icon(
-                    Icons.power_settings_new,
-                    color: Colors.red,
+              ),
+              // color: Color(0xffe7eaf2),
+              height: double.infinity,
+              child: SingleChildScrollView(
+                child: Container(
+                  // decoration: BoxDecoration(
+                  //   image: DecorationImage(
+                  //     image: AssetImage("images/cres_bg.jpg"),
+                  //     fit: BoxFit.cover,
+                  //   ),
+                  // ),
+                  width: MediaQuery.of(context).size.width,
+                  padding: EdgeInsets.fromLTRB(40.0, 40, 40, 40),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      user.tenDecode.isEmpty
+                          ? Container()
+                          : CircleAvatar(
+                              backgroundColor: Colors.brown.shade800,
+                              minRadius: 40,
+                              child: Text(
+                                user.tenDecode[0].toUpperCase(),
+                                style: TextStyle(
+                                    fontSize: 30, fontWeight: FontWeight.bold),
+                              )),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      _placeContainer(
+                          user.tenDecode != null
+                              ? 'Tên: ${user.tenDecode}'
+                              : 'Chưa nhập tên',
+                          Colors.white,
+                          null),
+                      _placeContainer(
+                          'Tên ĐN: ${user.user ?? ''}', Colors.white, null),
+                      _placeContainer(
+                          user.nhaDecode != null
+                              ? 'Địa chỉ: ${user.nhaDecode}'
+                              : 'Chưa nhập địa chỉ',
+                          Colors.white,
+                          null),
+                      _placeContainer(
+                          user.sdt != null
+                              ? 'SĐT: ${user.sdt}'
+                              : 'Chưa nhập SĐT',
+                          Colors.white,
+                          null),
+                      // _editContainer(
+                      //     'Sửa thông tin', Color(0xffffffff), Icon(Icons.edit)),
+                      _logoutContainer(
+                        'Đăng xuất',
+                        Color(0xffffffff),
+                        Icon(
+                          Icons.power_settings_new,
+                          color: Colors.red,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              ],
+              ),
             ),
-          ),
-        ),
-      ),
     );
   }
 

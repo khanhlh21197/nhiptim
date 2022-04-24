@@ -44,7 +44,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    initMqtt();
     initOneSignal(Constants.one_signal_app_id);
     sharedPrefsHelper = SharedPrefsHelper();
     getSharedPrefs();
@@ -170,19 +169,19 @@ class _LoginPageState extends State<LoginPage> {
           'password', _passwordController.text);
       await sharedPrefsHelper.addBoolToSF('switchValue', _switchValue);
       await sharedPrefsHelper.addBoolToSF('login', true);
-      // navigatorPushAndRemoveUntil(
-      //   context,
-      //   HomeScreen(
-      //     loginResponse: responseMap,
-      //   ),
-      // );
-      if (_emailController.text == 'admin' && switchValue == false) {
-        navigatorPushAndRemoveUntil(
-            context,
-            HomeScreen(
-              loginResponse: responseMap,
-            ));
-      }
+      navigatorPushAndRemoveUntil(
+        context,
+        HomeScreen(
+          loginResponse: responseMap,
+        ),
+      );
+      // if (_emailController.text == 'admin' && switchValue == false) {
+      //   navigatorPushAndRemoveUntil(
+      //       context,
+      //       HomeScreen(
+      //         loginResponse: responseMap,
+      //       ));
+      // }
       // if (switchValue) {
       //   navigatorPushAndRemoveUntil(context,BenhNhan());
       // } else {
@@ -219,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
               obscureText: isPassword,
               decoration: InputDecoration(
                   border: InputBorder.none,
-                  fillColor: Color(0xfff3f3f4),
+                  fillColor: Colors.white.withOpacity(0.8),
                   filled: true))
         ],
       ),
@@ -374,7 +373,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _title() {
     return Container(
       child: Image.asset(
-        'images/cres_logo.jpg',
+        'images/logo.png',
         width: 170,
         height: 170,
       ),
@@ -400,7 +399,12 @@ class _LoginPageState extends State<LoginPage> {
   Widget _emailPasswordWidget() {
     return Column(
       children: <Widget>[
-        _entryField("Tên đăng nhập", _emailController),
+        Container(
+          // decoration: BoxDecoration(
+          //   color: Colors.white.withOpacity(0.7)
+          // ),
+            child: _entryField("Tên đăng nhập", _emailController),
+        ),
         _entryField("Mật khẩu", _passwordController, isPassword: true),
       ],
     );
@@ -415,8 +419,14 @@ class _LoginPageState extends State<LoginPage> {
           FocusScope.of(context).requestFocus(FocusNode());
         },
         child: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("images/cres_bg.jpg"),
+              fit: BoxFit.cover,
+            ),
+          ),
           height: height,
-          color: Colors.white,
+          // color: Colors.white,
           child: Stack(
             children: <Widget>[
               Positioned(
@@ -440,7 +450,7 @@ class _LoginPageState extends State<LoginPage> {
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             color: Colors.blueAccent,
-                            fontSize: 20),
+                            fontSize: MediaQuery.of(context).size.width * .04),
                       ),
                       // _header(),
                       SizedBox(height: 40),
@@ -454,7 +464,7 @@ class _LoginPageState extends State<LoginPage> {
                       Text(
                         'Sản phẩm được sản xuất bởi Techno',
                         style: TextStyle(
-                            fontWeight: FontWeight.bold, fontSize: 15),
+                            fontWeight: FontWeight.bold, fontSize: MediaQuery.of(context).size.width * .04),
                       ),
                     ],
                   ),

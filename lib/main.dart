@@ -6,7 +6,6 @@ import 'package:get_mac/get_mac.dart';
 import 'package:technonhiptim/helper/constants.dart' as Constants;
 
 import 'login/login_page.dart';
-import 'main/home_screen.dart';
 
 void main() => runApp(MyApp());
 
@@ -42,6 +41,7 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       _platformVersion = platformVersion;
       Constants.mac = _platformVersion;
+      print('MAC: ${Constants.mac}');
     });
   }
 

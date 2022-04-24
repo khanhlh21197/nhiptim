@@ -142,7 +142,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         backgroundColor: Colors.blueAccent,
         automaticallyImplyLeading: false,
         title: Text(
-          'Danh sách lõi loc',
+          'Danh sách lõi lọc',
           style: TextStyle(
             color: Colors.white,
           ),
@@ -165,7 +165,13 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   Widget buildBody() {
     return Container(
-      color: Colors.white,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage("images/cres_bg.jpg"),
+          fit: BoxFit.cover,
+        ),
+      ),
+      // color: Colors.white,
       child: Column(
         children: [
           buildListView(),
@@ -233,7 +239,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         padding: const EdgeInsets.symmetric(vertical: 1),
         margin: const EdgeInsets.all(8),
         child: PhysicalModel(
-          color: Colors.white,
+          color: Colors.white.withOpacity(0.9),
           elevation: 5,
           shadowColor: Colors.white,
           borderRadius: BorderRadius.circular(5),
@@ -241,9 +247,15 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
             Expanded(
               child: Row(
                 children: [
-                  Expanded(child: elementIcon(loi)),
+                  Container(
+                    height: 50,
+                    width: 50,
+                    child: Image.asset(
+                      'images/logo.png',
+                    ),
+                  ),
                   Expanded(child: elementInfo(loi)),
-                  Expanded(child: reloadButton(loi)),
+                  reloadButton(loi),
                 ],
               ),
             ),
@@ -255,11 +267,11 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
 
   Widget elementIcon(Loi loi) {
     return Container(
-      margin: const EdgeInsets.all(8),
-      width: 15,
+      margin: const EdgeInsets.all(4),
+      width: 30,
       height: 30,
       child: LiquidLinearProgressIndicator(
-        value: 0.6,
+        value: 0.5,
         // Defaults to 0.5.
         valueColor: AlwaysStoppedAnimation(Colors.blueAccent),
         // Defaults to the current Theme's accentColor.
@@ -267,7 +279,7 @@ class _DepartmentListScreenState extends State<DepartmentListScreen> {
         // Defaults to the current Theme's backgroundColor.
         borderColor: Colors.blueAccent,
         borderWidth: 3.0,
-        borderRadius: 12.0,
+        borderRadius: 15.0,
         direction: Axis.vertical,
         // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.horizontal.
       ),
