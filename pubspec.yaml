@@ -62,7 +62,11 @@ dev_dependencies:
   floor_generator: ^0.9.0
   build_runner: ^1.7.1
   flutter_time_picker_spinner: ^1.0.6+1
-
+  flutter_launcher_icons:
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "images/cres_logo.jpg"
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -90,10 +94,10 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-#  fonts:
-#    - family: MyFlutterApp // tên của bộ icons . Nhớ đặt đúng tên đã đặt như trên web nhé
-#      fonts:
-#        - asset: assets/fonts/MyFlutterApp.ttf // đường dẫn file .ttf
+  #  fonts:
+  #    - family: MyFlutterApp // tên của bộ icons . Nhớ đặt đúng tên đã đặt như trên web nhé
+  #      fonts:
+  #        - asset: assets/fonts/MyFlutterApp.ttf // đường dẫn file .ttf
   # fonts:
   #   - family: Schyler
   #     fonts:

@@ -130,7 +130,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
           backgroundColor: Colors.blueAccent,
           automaticallyImplyLeading: false,
           title: Text(
-            'Máy lọc nước của User',
+            'Máy lọc nước',
             style: TextStyle(
               color: Colors.white,
             ),
