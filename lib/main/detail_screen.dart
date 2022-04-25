@@ -190,6 +190,9 @@ class _DetailScreenState extends State<DetailScreen> {
             context,
             DeviceDetailScreen(
               thietBi: tb,
+              updateCallback: (device) {
+                getDevices();
+              },
             ));
       },
       behavior: HitTestBehavior.translucent,

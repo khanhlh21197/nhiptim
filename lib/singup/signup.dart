@@ -248,6 +248,14 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void _tryRegister() async {
+    var status;
+    String playerid = '';
+    try {
+      playerid = await status.subscriptionStatus.userId;
+    } catch (e) {
+      print('_LoginPageState._tryLogin error: ${e.toString()}');
+    }
+
     registerUser = User(
       Constants.mac,
       _emailController.text,
@@ -257,7 +265,7 @@ class _SignUpPageState extends State<SignUpPage> {
       _addressController.text,
       '',
       '',
-      '',
+      playerid,
     );
     mqttClientWrapper.register(registerUser);
   }

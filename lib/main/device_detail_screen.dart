@@ -3,12 +3,11 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
-import 'package:technonhiptim/dialogWidget/edit_department_dialog.dart';
 import 'package:technonhiptim/helper/media_query_helper.dart';
 import 'package:technonhiptim/helper/models.dart';
 import 'package:technonhiptim/helper/mqttClientWrapper.dart';
+import 'package:technonhiptim/helper/shared_prefs_helper.dart';
 import 'package:technonhiptim/main/department_list_screen.dart';
-import 'package:technonhiptim/main/giamsat.dart';
 import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
@@ -31,7 +30,7 @@ class DeviceDetailScreen extends StatefulWidget {
 }
 
 class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
-  static const LOGIN_KHOA = 'getdiadiem';
+  static const DELETE_TB = 'deletetb';
 
   final GlobalKey<State> _keyLoader = new GlobalKey<State>();
   List<Department> departments = List();
@@ -39,13 +38,21 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
 
   String pubTopic;
   bool isLoading = true;
+  String iduser = "";
+  SharedPrefsHelper sharedPrefsHelper;
 
   @override
   void initState() {
     isLoading = false;
     initMqtt();
+    getSharedPref();
 
     super.initState();
+  }
+
+  Future<void> getSharedPref() async {
+    sharedPrefsHelper = SharedPrefsHelper();
+    iduser = await sharedPrefsHelper.getStringValuesSF('iduser');
   }
 
   Future<void> initMqtt() async {
@@ -58,35 +65,29 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       var result = _message.replaceAll("\"", "").split('&');
       String trangthai = '';
 
-      switch (result[1]) {
-        case '1':
-          trangthai = 'Lọc';
-          break;
-        case '2':
-          trangthai = 'Xả';
-          break;
-        case '3':
-          trangthai = 'Rửa hóa chất';
-          break;
-        case '4':
-          trangthai = 'Dừng máy';
-          break;
-        case '5':
-          trangthai = 'Mất kết nối';
-          break;
+      if (result[1] != null) {
+        switch (result[1]) {
+          case '1':
+            trangthai = 'Lọc';
+            break;
+          case '2':
+            trangthai = 'Xả';
+            break;
+          case '3':
+            trangthai = 'Rửa hóa chất';
+            break;
+          case '4':
+            trangthai = 'Dừng máy';
+            break;
+          case '5':
+            trangthai = 'Mất kết nối';
+            break;
+        }
+        widget.thietBi.trangthai = trangthai;
+        widget.thietBi.TDS = result[0];
+        setState(() {});
       }
-      widget.thietBi.trangthai = trangthai;
-      widget.thietBi.TDS = result[0];
-      setState(() {});
     });
-    // getDepartments();
-  }
-
-  void getDepartments() {
-    Department department = Department('', '', Constants.mac);
-    pubTopic = LOGIN_KHOA;
-    publishMessage(pubTopic, jsonEncode(department));
-    showLoadingDialog();
   }
 
   Future<void> publishMessage(String topic, String message) async {
@@ -136,25 +137,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             ),
           ),
           centerTitle: true,
-          // actions: [
-          //   IconButton(
-          //       icon: Icon(
-          //         Icons.edit,
-          //         color: Colors.black,
-          //       ),
-          //       onPressed: () {
-          //         navigatorPushAndRemoveUntil(context, EditDeviceDialog(
-          //           thietbi: tbs[selectedIndex],
-          //           dropDownItems: dropDownItems,
-          //           deleteCallback: (param) {
-          //             getDevices();
-          //           },
-          //           updateCallback: (updatedDevice) {
-          //             getDevices();
-          //           },
-          //         ),);
-          //       }),
-          // ],
         ),
         body: isLoading
             ? Center(child: CircularProgressIndicator())
@@ -162,22 +144,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       ),
     );
   }
-
-  // void getDevices() async {
-  //   ThietBi t = ThietBi(
-  //     '1',
-  //     '2',
-  //     '3',
-  //     '4',
-  //     '5',
-  //     '6',
-  //     '7',
-  //     Constants.mac,
-  //   );
-  //   pubTopic = LOGIN_DEVICE;
-  //   publishMessage(pubTopic, jsonEncode(t));
-  //   showLoadingDialog();
-  // }
 
   Widget buildBody() {
     return Container(
@@ -201,6 +167,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
               ),
               liquidProgress(),
               deviceInfo(),
+              deleteButton(),
             ],
           ),
         ),
@@ -213,7 +180,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       width: ScreenHelper.getWidth(context) * 0.7,
       height: ScreenHelper.getWidth(context) * 0.7,
       child: LiquidCircularProgressIndicator(
-        value: 0.25,
+        value: int.parse(widget.thietBi.TDS) / 100,
         // Defaults to 0.5.
         valueColor: AlwaysStoppedAnimation(Colors.lightBlue),
         // Defaults to the current Theme's accentColor.
@@ -224,6 +191,92 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
         direction: Axis.vertical,
         // The direction the liquid moves (Axis.vertical = bottom to top, Axis.horizontal = left to right). Defaults to Axis.vertical.
         center: centerProgress(),
+      ),
+    );
+  }
+
+  Widget deleteButton() {
+    return Container(
+      height: 36,
+      margin: const EdgeInsets.symmetric(
+        vertical: 8,
+        horizontal: 86,
+      ),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Colors.grey),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white,
+            offset: Offset(1.0, 1.0), //(x,y)
+            blurRadius: 6.0,
+          ),
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+          showDialog(
+            context: context,
+            builder: (context) => AlertDialog(
+              title: new Text(
+                'Xóa thiết bị ?',
+              ),
+              actions: <Widget>[
+                new FlatButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  child: new Text(
+                    'Hủy',
+                  ),
+                ),
+                new FlatButton(
+                  onPressed: () {
+                    pubTopic = DELETE_TB;
+                    var tb = ThietBi(
+                        iduser,
+                        widget.thietBi.mathietbi,
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        '',
+                        Constants.mac);
+                    publishMessage(pubTopic, jsonEncode(tb));
+                  },
+                  child: new Text(
+                    'Đồng ý',
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+            Text(
+              'Xóa thiết bị',
+              style: TextStyle(fontSize: 18, color: Colors.red),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -257,6 +310,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
             context,
             DepartmentListScreen(
               thietBi: widget.thietBi,
+              updateCallback: (device) {},
             ));
       },
       child: Container(
@@ -319,7 +373,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
         children: [
           Text('Chỉ số tinh khiết',
               style: TextStyle(fontSize: ScreenHelper.getWidth(context) * .04)),
-          Text('12',
+          Text(widget.thietBi.TDS,
               style: TextStyle(
                   fontSize: 45,
                   color: Colors.blue,
@@ -328,177 +382,6 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
               style: TextStyle(fontSize: ScreenHelper.getWidth(context) * .04)),
         ],
       ),
-    );
-  }
-
-  Widget buildTableTitle() {
-    return Container(
-      // color: Colors.yellow,
-      height: 40,
-      child: Row(
-        children: [
-          buildTextLabel('STT', 1),
-          verticalLine(),
-          buildTextLabel('Mã', 3),
-          verticalLine(),
-          buildTextLabel('Ví trí', 3),
-          verticalLine(),
-          // buildTextLabel('Sđt', 3),
-          // verticalLine(),
-          buildTextLabel('Sửa', 1),
-        ],
-      ),
-    );
-  }
-
-  Widget buildTextLabel(String data, int flexValue) {
-    return Expanded(
-      child: Text(
-        data,
-        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-        textAlign: TextAlign.center,
-      ),
-      flex: flexValue,
-    );
-  }
-
-  Widget buildListView() {
-    return Container(
-      child: Expanded(
-        child: ListView.builder(
-          scrollDirection: Axis.vertical,
-          shrinkWrap: true,
-          itemCount: departments.length,
-          itemBuilder: (context, index) {
-            return itemView(index);
-          },
-        ),
-      ),
-    );
-  }
-
-  Widget itemView(int index) {
-    return InkWell(
-      onTap: () async {
-        navigatorPush(
-            context,
-            GiamSat(
-              madiadiem: departments[index].maphong,
-            ));
-      },
-      child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 1),
-        child: Column(
-          children: [
-            Container(
-              height: 40,
-              child: Row(
-                children: [
-                  buildTextData('${index + 1}', 1),
-                  verticalLine(),
-                  buildTextData(departments[index].maphong ?? '', 3),
-                  verticalLine(),
-                  buildTextData(departments[index].tenphong ?? '', 3),
-                  verticalLine(),
-                  buildEditBtn(index, 1),
-                ],
-              ),
-            ),
-            horizontalLine(),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget buildEditBtn(int index, int flex) {
-    return Expanded(
-      child: IconButton(
-          icon: Icon(
-            Icons.edit,
-            color: Colors.black,
-          ),
-          onPressed: () async {
-            await showDialog(
-                barrierDismissible: false,
-                context: context,
-                builder: (BuildContext context) {
-                  return Dialog(
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0)),
-                    //this right here
-                    child: Container(
-                      child: Stack(
-                        children: [
-                          EditDepartmentDialog(
-                            department: departments[index],
-                            editCallback: (department) {
-                              print(
-                                  '_DepartmentListScreenState.itemView $department');
-                              getDepartments();
-                            },
-                            deleteCallback: (a) {
-                              getDepartments();
-                            },
-                          ),
-                          Positioned(
-                            right: 0.0,
-                            child: GestureDetector(
-                              onTap: () {
-                                Navigator.of(context).pop();
-                                getDepartments();
-                              },
-                              child: Align(
-                                alignment: Alignment.topRight,
-                                child: CircleAvatar(
-                                  radius: 14.0,
-                                  backgroundColor: Colors.white,
-                                  child: Icon(Icons.close, color: Colors.black),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  );
-                });
-          }),
-      flex: flex,
-    );
-  }
-
-  Widget buildTextData(String data, int flexValue) {
-    return Expanded(
-      child: Text(
-        data,
-        style: TextStyle(fontSize: 18),
-        textAlign: TextAlign.center,
-      ),
-      flex: flexValue,
-    );
-  }
-
-  Widget buildStatusDevice(bool data, int flexValue) {
-    return Expanded(
-      child: data
-          ? Container(
-              width: 5,
-              height: 5,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.green,
-              ),
-            )
-          : Container(
-              width: 5,
-              height: 5,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.red,
-              ),
-            ),
-      flex: flexValue,
     );
   }
 
@@ -527,8 +410,18 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
   void handleDepartment(String message) {
     Map responseMap = jsonDecode(message);
     var response = DeviceResponse.fromJson(responseMap);
-
-    departments = response.id.map((e) => Department.fromJson(e)).toList();
+    print('Device detail screen: $response');
+    switch (pubTopic) {
+      case DELETE_TB:
+        if (response.errorCode == '0') {
+          widget.updateCallback(response);
+          Navigator.pop(context);
+          Navigator.pop(context);
+        }
+        break;
+      default:
+        break;
+    }
     hideLoadingDialog();
     setState(() {});
   }

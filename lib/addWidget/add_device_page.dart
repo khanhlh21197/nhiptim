@@ -49,7 +49,7 @@ class _AddDeviceScreenState extends State<AddDeviceScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Thêm người',
+          'Thêm thiết bị',
         ),
         centerTitle: true,
       ),
