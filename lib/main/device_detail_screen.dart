@@ -180,7 +180,7 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
       width: ScreenHelper.getWidth(context) * 0.7,
       height: ScreenHelper.getWidth(context) * 0.7,
       child: LiquidCircularProgressIndicator(
-        value: int.parse(widget.thietBi.TDS) / 100,
+        value: double.parse(widget.thietBi.TDS) / 100,
         // Defaults to 0.5.
         valueColor: AlwaysStoppedAnimation(Colors.lightBlue),
         // Defaults to the current Theme's accentColor.
