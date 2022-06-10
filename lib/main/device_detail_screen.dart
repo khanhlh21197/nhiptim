@@ -12,6 +12,7 @@ import 'package:technonhiptim/model/department.dart';
 import 'package:technonhiptim/model/thietbi.dart';
 import 'package:technonhiptim/navigator.dart';
 import 'package:technonhiptim/response/device_response.dart';
+import 'package:technonhiptim/response/device_status.dart';
 
 import '../helper/constants.dart' as Constants;
 
@@ -62,31 +63,12 @@ class _DeviceDetailScreenState extends State<DeviceDetailScreen> {
 
     mqttClientWrapper.subscribe(widget.thietBi.mathietbi, (_message) {
       print('_DetailScreenState.initMqtt $_message');
-      var result = _message.replaceAll("\"", "").split('&');
-      String trangthai = '';
+      var deviceStatus = deviceStatusFromJson(_message);
 
-      if (result[1] != null) {
-        switch (result[1]) {
-          case '1':
-            trangthai = 'Lọc';
-            break;
-          case '2':
-            trangthai = 'Xả';
-            break;
-          case '3':
-            trangthai = 'Rửa hóa chất';
-            break;
-          case '4':
-            trangthai = 'Dừng máy';
-            break;
-          case '5':
-            trangthai = 'Mất kết nối';
-            break;
-        }
-        widget.thietBi.trangthai = trangthai;
-        widget.thietBi.TDS = result[0];
-        setState(() {});
-      }
+      widget.thietBi.dienap = deviceStatus.dienap ?? '0.0';
+      widget.thietBi.trangthai = deviceStatus.trangthai ?? '1';
+      widget.thietBi.TDS = deviceStatus.tds ?? '0.0';
+      setState(() {});
     });
   }
 
